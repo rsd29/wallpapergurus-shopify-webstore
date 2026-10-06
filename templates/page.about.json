@@ -1,0 +1,29 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "about": {
+      "type": "about-page",
+      "settings": {
+        "image": "",
+        "image_alt": "Wallpaper Gurus",
+        "story_heading": "Wallpaper Gurus",
+        "story_copy": "<p>Wallpaper Gurus is a fourth-generation installation company based on the Gold Coast and Brisbane. We hang wallpaper for homes, commercial fit-outs, and designers who want the job done once and done properly.</p>",
+        "approach_heading": "How we work",
+        "approach_copy": "<p>We advise on quantities, source papers that install well, and prepare walls so the finish lasts. The shop is here so you can browse papers we know how to hang.</p>",
+        "service_heading": "Gold Coast and Brisbane",
+        "service_copy": "<p>We work with homeowners, builders, interior designers, and developers throughout Queensland, with projects further afield when the job calls for it.</p>"
+      }
+    }
+  },
+  "order": [
+    "about"
+  ]
+}

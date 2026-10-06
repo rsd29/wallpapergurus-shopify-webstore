@@ -1,0 +1,597 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */{
+  "sections": {
+    "hero_jVaWmY": {
+      "type": "hero",
+      "blocks": {
+        "group_hero_title": {
+          "type": "group",
+          "name": "Title",
+          "settings": {
+            "content_direction": "column",
+            "vertical_on_mobile": true,
+            "horizontal_alignment": "center",
+            "vertical_alignment": "center",
+            "align_baseline": false,
+            "horizontal_alignment_flex_direction_column": "center",
+            "vertical_alignment_flex_direction_column": "center",
+            "gap": 0,
+            "width": "fill",
+            "custom_width": 100,
+            "width_mobile": "fill",
+            "custom_width_mobile": 100,
+            "height": "fit",
+            "custom_height": 100,
+            "background_media": "none",
+            "video_position": "cover",
+            "background_image_position": "cover",
+            "border": "none",
+            "border_width": 1,
+            "border_opacity": 100,
+            "border_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {
+            "text_YLPk4p": {
+              "type": "text",
+              "name": "Headline",
+              "settings": {
+                "text": "<p>Four generations.<br>Since 1926.</p>",
+                "text_color": "#ffffff",
+                "width": "100%",
+                "max_width": "none",
+                "alignment": "center",
+                "type_preset": "custom",
+                "font": "var(--font-heading--family)",
+                "font_size": "5.5rem",
+                "line_height": "tight",
+                "letter_spacing": "tight",
+                "case": "none",
+                "wrap": "balance",
+                "background": false,
+                "background_color": "#00000026",
+                "corner_radius": 0,
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            },
+            "text_promise_hero": {
+              "type": "text",
+              "name": "Promise",
+              "settings": {
+                "text": "<p>Do it once, do it right.</p>",
+                "text_color": "#ffffff",
+                "width": "100%",
+                "max_width": "none",
+                "alignment": "center",
+                "type_preset": "custom",
+                "font": "var(--font-subheading--family)",
+                "font_size": "1.25rem",
+                "line_height": "normal",
+                "letter_spacing": "normal",
+                "case": "none",
+                "wrap": "balance",
+                "background": false,
+                "background_color": "#00000026",
+                "corner_radius": 0,
+                "padding-block-start": 22,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            }
+          },
+          "block_order": [
+            "text_YLPk4p",
+            "text_promise_hero"
+          ]
+        },
+        "group_hero_actions": {
+          "type": "group",
+          "name": "Buttons",
+          "settings": {
+            "content_direction": "row",
+            "vertical_on_mobile": true,
+            "horizontal_alignment": "center",
+            "vertical_alignment": "center",
+            "align_baseline": false,
+            "horizontal_alignment_flex_direction_column": "center",
+            "vertical_alignment_flex_direction_column": "center",
+            "gap": 12,
+            "width": "fill",
+            "custom_width": 100,
+            "width_mobile": "fill",
+            "custom_width_mobile": 100,
+            "height": "fit",
+            "custom_height": 100,
+            "background_media": "none",
+            "video_position": "cover",
+            "background_image_position": "cover",
+            "border": "none",
+            "border_width": 1,
+            "border_opacity": 100,
+            "border_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {
+            "button_explore_hero": {
+              "type": "button",
+              "name": "Explore Wallpapers",
+              "settings": {
+                "label": "Explore Wallpapers",
+                "link": "shopify://collections/all",
+                "open_in_new_tab": false,
+                "style_class": "button-custom",
+                "custom_button_background": "#ffffff",
+                "custom_button_text": "#171717",
+                "custom_button_border": "#ffffff",
+                "width": "fit-content",
+                "custom_width": 100,
+                "width_mobile": "fit-content",
+                "custom_width_mobile": 100
+              },
+              "blocks": {}
+            },
+            "button_callback_hero": {
+              "type": "button",
+              "name": "Request a Callback",
+              "settings": {
+                "label": "Request a Callback",
+                "link": "shopify://pages/contact",
+                "open_in_new_tab": false,
+                "style_class": "button-custom",
+                "custom_button_background": "rgba(0,0,0,0)",
+                "custom_button_text": "#ffffff",
+                "custom_button_border": "#ffffff",
+                "width": "fit-content",
+                "custom_width": 100,
+                "width_mobile": "fit-content",
+                "custom_width_mobile": 100
+              },
+              "blocks": {}
+            }
+          },
+          "block_order": [
+            "button_explore_hero",
+            "button_callback_hero"
+          ]
+        }
+      },
+      "block_order": [
+        "group_hero_title",
+        "group_hero_actions"
+      ],
+      "name": "t:names.hero",
+      "settings": {
+        "media_type_1": "video",
+        "video_file_1": "hero-split-left.mp4",
+        "media_type_2": "video",
+        "video_file_2": "hero-split-right.mp4",
+        "stack_media_on_mobile": true,
+        "custom_mobile_media": false,
+        "media_type_1_mobile": "image",
+        "media_type_2_mobile": "image",
+        "open_in_new_tab": false,
+        "content_direction": "column",
+        "vertical_on_mobile": true,
+        "horizontal_alignment": "space-between",
+        "vertical_alignment": "flex-end",
+        "align_baseline": true,
+        "horizontal_alignment_flex_direction_column": "center",
+        "vertical_alignment_flex_direction_column": "flex-end",
+        "gap": 28,
+        "section_width": "page-width",
+        "section_height": "full-screen",
+        "section_height_custom": 100,
+        "background_color": "rgba(0,0,0,0)",
+        "toggle_overlay": true,
+        "overlay_color": "#121212d6",
+        "overlay_style": "gradient",
+        "gradient_direction": "to top",
+        "blurred_reflection": false,
+        "reflection_opacity": 75,
+        "padding-block-start": 100,
+        "padding-block-end": 72
+      }
+    },
+    "product_list_fa6P9H": {
+      "type": "product-list",
+      "blocks": {
+        "static-header": {
+          "type": "_product-list-content",
+          "name": "t:names.header",
+          "static": true,
+          "settings": {
+            "content_direction": "row",
+            "vertical_on_mobile": false,
+            "horizontal_alignment": "space-between",
+            "vertical_alignment": "flex-end",
+            "align_baseline": true,
+            "horizontal_alignment_flex_direction_column": "flex-start",
+            "vertical_alignment_flex_direction_column": "center",
+            "gap": 12,
+            "width": "fill",
+            "custom_width": 100,
+            "width_mobile": "fill",
+            "custom_width_mobile": 100,
+            "height": "fit",
+            "custom_height": 100,
+            "background_media": "none",
+            "video_position": "cover",
+            "background_image_position": "cover",
+            "border": "none",
+            "border_width": 1,
+            "border_opacity": 100,
+            "border_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {
+            "product_list_text_YFtzcL": {
+              "type": "_product-list-text",
+              "name": "t:names.collection_title",
+              "settings": {
+                "text": "<h3>New arrivals</h3>",
+                "width": "fit-content",
+                "max_width": "normal",
+                "alignment": "left",
+                "type_preset": "h4",
+                "font": "var(--font-body--family)",
+                "line_height": "normal",
+                "letter_spacing": "normal",
+                "case": "none",
+                "wrap": "pretty",
+                "background": false,
+                "background_color": "#00000026",
+                "corner_radius": 0,
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            },
+            "product_list_button_MWeP9V": {
+              "type": "_product-list-button",
+              "name": "t:names.product_list_button",
+              "settings": {
+                "label": "View all",
+                "open_in_new_tab": false,
+                "style_class": "link",
+                "width": "fit-content",
+                "custom_width": 100,
+                "width_mobile": "fit-content",
+                "custom_width_mobile": 100
+              },
+              "blocks": {}
+            }
+          },
+          "block_order": [
+            "product_list_text_YFtzcL",
+            "product_list_button_MWeP9V"
+          ]
+        },
+        "static-product-card": {
+          "type": "_product-card",
+          "name": "t:names.product_card",
+          "static": true,
+          "settings": {
+            "product_card_gap": 4,
+            "border": "none",
+            "border_width": 1,
+            "border_opacity": 100,
+            "border_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {
+            "product_card_gallery_677WP3": {
+              "type": "_product-card-gallery",
+              "name": "t:names.product_card_media",
+              "settings": {
+                "image_ratio": "square",
+                "border": "none",
+                "border_width": 1,
+                "border_opacity": 100,
+                "border_radius": 0,
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            },
+            "product_title_YXxMTj": {
+              "type": "product-title",
+              "name": "t:names.product_title",
+              "settings": {
+                "width": "100%",
+                "max_width": "normal",
+                "alignment": "left",
+                "type_preset": "rte",
+                "font": "var(--font-body--family)",
+                "font_size": "1rem",
+                "line_height": "normal",
+                "letter_spacing": "normal",
+                "case": "none",
+                "wrap": "pretty",
+                "background": false,
+                "background_color": "#00000026",
+                "corner_radius": 0,
+                "padding-block-start": 4,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            },
+            "price_JQzVV4": {
+              "type": "price",
+              "name": "t:names.product_price",
+              "settings": {
+                "show_sale_price_first": true,
+                "show_installments": false,
+                "show_tax_info": false,
+                "type_preset": "h6",
+                "width": "100%",
+                "alignment": "left",
+                "font": "var(--font-body--family)",
+                "font_size": "1rem",
+                "line_height": "normal",
+                "letter_spacing": "normal",
+                "case": "none",
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            }
+          },
+          "block_order": [
+            "product_card_gallery_677WP3",
+            "product_title_YXxMTj",
+            "price_JQzVV4"
+          ]
+        }
+      },
+      "name": "t:names.product_list",
+      "settings": {
+        "collection": "all",
+        "layout_type": "grid",
+        "carousel_on_mobile": false,
+        "max_products": 8,
+        "columns": 4,
+        "mobile_columns": "2",
+        "mobile_card_size": "60cqw",
+        "columns_gap": 8,
+        "rows_gap": 24,
+        "icons_style": "arrow",
+        "icons_shape": "none",
+        "section_width": "page-width",
+        "full_height": true,
+        "horizontal_alignment": "flex-start",
+        "gap": 28,
+        "background_color": "{{ settings.color_palette.background }}",
+        "padding-block-start": 48,
+        "padding-block-end": 48
+      }
+    },
+    "craft_story": {
+      "type": "craft-story",
+      "blocks": {
+        "generations": {
+          "type": "point",
+          "settings": {
+            "heading": "Four generations, since 1926",
+            "text": "A century of experience, passed down and reflected in the craftsmanship."
+          }
+        },
+        "insured": {
+          "type": "point",
+          "settings": {
+            "heading": "Fully insured",
+            "text": "You're covered. We're accountable."
+          }
+        },
+        "reviews": {
+          "type": "point",
+          "settings": {
+            "heading": "100+ five-star reviews",
+            "text": "Trusted for quality workmanship and professionalism."
+          }
+        },
+        "scope": {
+          "type": "point",
+          "settings": {
+            "heading": "Residential and commercial",
+            "text": "From feature walls to large commercial installations."
+          }
+        },
+        "types": {
+          "type": "point",
+          "settings": {
+            "heading": "Skilled in every wallpaper type",
+            "text": "Four generations have seen every paper, every wall condition, and every problem."
+          }
+        }
+      },
+      "block_order": [
+        "generations",
+        "insured",
+        "reviews",
+        "scope",
+        "types"
+      ],
+      "settings": {
+        "heading": "Done once.\nDone right.",
+        "lede": "Robert Bryant started hanging wallpaper in London in 1926. Four generations later, his family is still the one on the ladder on the Gold Coast and in Brisbane. We take our own measurements, we are fully insured, and we stay until the wall is right. That is how we got more than a hundred five-star reviews.",
+        "video_file": "craft-story.mp4",
+        "video_alt": "Wallpaper Gurus installer at work in a high-rise home",
+        "video_caption": "At work",
+        "image_top_asset": "craft-still-windows.jpg",
+        "image_top_alt": "Striped wallpaper in a bedroom with plantation shutters",
+        "image_top_caption": "Feature wall",
+        "image_bottom_asset": "craft-still-texture.jpg",
+        "image_bottom_alt": "Textured wallpaper behind a bed",
+        "image_bottom_caption": "Bedroom",
+        "image_feature_asset": "craft-still-windows.jpg",
+        "image_feature_alt": "Striped wallpaper in a bedroom with plantation shutters",
+        "points_heading": "What sets us apart",
+        "closing": "Wallpaper Installation, Perfected by The Wallpaper Gurus.",
+        "closing_secondary": "Father & son installers delivering precise workmanship with pride.",
+        "closing_location": "Gold Coast & Brisbane based, working across Australia.",
+        "section_width": "page-width",
+        "padding-block-start": 80,
+        "padding-block-end": 80
+      }
+    },
+    "ugc_gallery": {
+      "type": "ugc-gallery",
+      "blocks": {
+        "review_sarah": {
+          "type": "review",
+          "settings": {
+            "author": "Sarah Mitchell",
+            "date": "2 weeks ago",
+            "rating": 5,
+            "text": "Absolutely flawless. They hung a feature wall in our living room and the pattern match is perfect down to the millimetre. On time, tidy, and clearly know their craft."
+          }
+        },
+        "review_james": {
+          "type": "review",
+          "settings": {
+            "author": "James Thornton",
+            "date": "a month ago",
+            "rating": 5,
+            "text": "Father and son team measured everything themselves and had the install done in a day. No fuss, no leftover mess. This is how trades should work."
+          }
+        },
+        "review_priya": {
+          "type": "review",
+          "settings": {
+            "author": "Priya Nair",
+            "date": "3 weeks ago",
+            "rating": 5,
+            "text": "We had a tricky textured wall and they still made the paper sit completely flat. Professional from the first call through to the last strip."
+          }
+        },
+        "review_david": {
+          "type": "review",
+          "settings": {
+            "author": "David Chen",
+            "date": "2 months ago",
+            "rating": 5,
+            "text": "Quoted fairly, arrived when they said they would, and the hallway looks like it belongs in a magazine. Would not use anyone else on the Gold Coast."
+          }
+        },
+        "review_emma": {
+          "type": "review",
+          "settings": {
+            "author": "Emma Walsh",
+            "date": "5 days ago",
+            "rating": 5,
+            "text": "Installed wallpaper throughout our apartment renovation in Broadbeach. Careful, precise, and they treated the place like it was their own."
+          }
+        },
+        "review_michael": {
+          "type": "review",
+          "settings": {
+            "author": "Michael O’Brien",
+            "date": "6 weeks ago",
+            "rating": 5,
+            "text": "Had wallpaper hung in our hallway and powder room in Paddington. The finish is immaculate. Easy to deal with, and proud of their work — you can tell."
+          }
+        },
+        "review_lisa": {
+          "type": "review",
+          "settings": {
+            "author": "Lisa Nguyen",
+            "date": "3 months ago",
+            "rating": 5,
+            "text": "Booked them for a whole-house paper in Southport. Father and son, no subcontractors, and every seam is invisible. Five stars is not enough."
+          }
+        },
+        "review_tom": {
+          "type": "review",
+          "settings": {
+            "author": "Tom Bradley",
+            "date": "4 weeks ago",
+            "rating": 5,
+            "text": "High ceilings, awkward corners, expensive paper. They treated it like a craft, not a job. The Gold Coast is lucky to have them."
+          }
+        },
+        "review_rebecca": {
+          "type": "review",
+          "settings": {
+            "author": "Rebecca Shaw",
+            "date": "a month ago",
+            "rating": 5,
+            "text": "Our Brisbane rental needed a feature wall done properly. They measured, hung, and cleaned up the same day. Guests keep asking who did it."
+          }
+        },
+        "review_chris": {
+          "type": "review",
+          "settings": {
+            "author": "Chris Patel",
+            "date": "2 weeks ago",
+            "rating": 5,
+            "text": "From the first site visit to the last wipe-down, completely painless. The pattern match across our stairwell is something I did not think was possible."
+          }
+        }
+      },
+      "block_order": [
+        "review_sarah",
+        "review_james",
+        "review_priya",
+        "review_david",
+        "review_emma",
+        "review_michael",
+        "review_lisa",
+        "review_tom",
+        "review_rebecca",
+        "review_chris"
+      ],
+      "settings": {
+        "heading": "121 five-star Google reviews",
+        "subheading": "Not one of them below five stars.",
+        "rating": "5.0",
+        "review_count": "121",
+        "perfect_score_label": "Every review is 5 stars",
+        "view_all_label": "Read them on Google",
+        "cta_label": "See all 121 five-star reviews on Google",
+        "google_url": "https://share.google/oi3b92iWDNWKOzf9X",
+        "section_width": "page-width",
+        "padding-block-start": 80,
+        "padding-block-end": 80
+      }
+    }
+  },
+  "order": [
+    "hero_jVaWmY",
+    "craft_story",
+    "ugc_gallery",
+    "product_list_fa6P9H"
+  ]
+}

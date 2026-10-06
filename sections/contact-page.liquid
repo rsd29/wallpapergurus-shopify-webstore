@@ -1,0 +1,312 @@
+{% liquid
+  if section.settings.background_color != blank
+    render 'contrast-override', background_color: section.settings.background_color, section_id: section.id
+  endif
+
+  assign hero_image = section.settings.image
+  assign phone = section.settings.phone | default: '0451 157 022'
+  assign email = section.settings.email | default: 'team@wallpapergurus.com'
+  assign area = section.settings.area | default: 'Gold Coast and Brisbane'
+  assign hours = section.settings.hours | default: 'By appointment'
+%}
+
+<div
+  class="section-background{% if section.settings.background_color != blank %} color-custom-{{ section.id }}{% endif %}"
+></div>
+
+<section
+  class="section section--{{ section.settings.section_width }} spacing-style contact-page{% if section.settings.background_color != blank %} color-custom-{{ section.id }}{% endif %}"
+  style="{% render 'spacing-style', settings: section.settings %}"
+>
+  <div class="contact-page__inner">
+    <header class="contact-page__mast">
+      <h1 class="contact-page__title">
+        {{ section.settings.heading | default: 'Let’s talk.' | escape }}
+      </h1>
+      {% if section.settings.subheading != blank %}
+        <p class="contact-page__lede">{{ section.settings.subheading | escape }}</p>
+      {% endif %}
+    </header>
+
+    <div class="contact-page__layout">
+      <div class="contact-page__content">
+        <ul class="contact-page__facts" role="list">
+          <li>
+            <span class="contact-page__fact-label">Phone</span>
+            <a href="tel:{{ phone | replace: ' ', '' }}">{{ phone | escape }}</a>
+          </li>
+          <li>
+            <span class="contact-page__fact-label">Email</span>
+            <a href="mailto:{{ email | escape }}">{{ email | escape }}</a>
+          </li>
+          <li>
+            <span class="contact-page__fact-label">Service area</span>
+            <span>{{ area | escape }}</span>
+          </li>
+          <li>
+            <span class="contact-page__fact-label">Hours</span>
+            <span>{{ hours | escape }}</span>
+          </li>
+        </ul>
+
+        <div class="contact-page__form">
+          {% content_for 'block', type: 'contact-form', id: 'contact-form' %}
+        </div>
+      </div>
+
+      <div class="contact-page__media">
+        {% if hero_image != blank %}
+          {{
+            hero_image
+            | image_url: width: 1800
+            | image_tag:
+              widths: '600, 900, 1200, 1600, 1800',
+              sizes: '(min-width: 990px) 42vw, 100vw',
+              class: 'contact-page__image',
+              loading: 'eager',
+              alt: section.settings.image_alt | default: 'Wallpaper Gurus at work'
+          }}
+        {% else %}
+          <img
+            class="contact-page__image"
+            src="{{ 'craft-still-texture.jpg' | asset_url }}"
+            alt="{{ section.settings.image_alt | default: 'Textured wallpaper behind a bed' | escape }}"
+            width="1024"
+            height="1024"
+            loading="eager"
+          >
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</section>
+
+{% stylesheet %}
+  .contact-page__inner {
+    display: flex;
+    flex-direction: column;
+    gap: clamp(2rem, 4vw, 3rem);
+    width: 100%;
+  }
+
+  .contact-page__mast {
+    display: grid;
+    gap: 1.1rem;
+    max-width: 40rem;
+  }
+
+  .contact-page__title {
+    margin: 0;
+    font-family: var(--font-heading--family);
+    font-size: clamp(2.5rem, 4.6vw, 4rem);
+    font-weight: 600;
+    line-height: 0.98;
+    letter-spacing: -0.035em;
+  }
+
+  .contact-page__lede {
+    margin: 0;
+    font-size: 1.0625rem;
+    line-height: 1.6;
+    color: rgb(var(--color-foreground-rgb) / 0.72);
+  }
+
+  .contact-page__layout {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    width: 100%;
+  }
+
+  .contact-page__content {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    min-width: 0;
+  }
+
+  .contact-page__facts {
+    display: grid;
+    gap: 0;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    border-block: 1px solid rgb(var(--color-foreground-rgb) / 0.14);
+  }
+
+  .contact-page__facts li {
+    display: grid;
+    gap: 0.2rem;
+    padding: 1rem 0;
+    border-block-start: 1px solid rgb(var(--color-foreground-rgb) / 0.14);
+  }
+
+  .contact-page__facts li:first-child {
+    border-block-start: 0;
+  }
+
+  .contact-page__fact-label {
+    font-size: 0.75rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: rgb(var(--color-foreground-rgb) / 0.52);
+  }
+
+  .contact-page__facts a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .contact-page__facts a:hover {
+    text-decoration: underline;
+  }
+
+  .contact-page__form {
+    max-width: 32rem;
+  }
+
+  .contact-page__media {
+    overflow: hidden;
+    background: rgb(var(--color-foreground-rgb) / 0.05);
+  }
+
+  .contact-page__image {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 4 / 5;
+    object-fit: cover;
+  }
+
+  @media screen and (min-width: 750px) {
+    .contact-page__facts li {
+      grid-template-columns: 9rem minmax(0, 1fr);
+      align-items: baseline;
+      gap: 1.5rem;
+    }
+  }
+
+  @media screen and (min-width: 990px) {
+    .contact-page__layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+      gap: 3rem;
+      align-items: start;
+    }
+
+    .contact-page__image {
+      aspect-ratio: 4 / 5;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Contact page",
+  "tag": "section",
+  "class": "contact-page-section",
+  "enabled_on": {
+    "templates": ["page"]
+  },
+  "blocks": [
+    {
+      "type": "contact-form"
+    }
+  ],
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Let’s talk."
+    },
+    {
+      "type": "textarea",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Ask about wallpaper, quantities, or a hang. Send a few photos of the room if you have them."
+    },
+    {
+      "type": "text",
+      "id": "phone",
+      "label": "Phone",
+      "default": "0451 157 022"
+    },
+    {
+      "type": "text",
+      "id": "email",
+      "label": "Email",
+      "default": "team@wallpapergurus.com"
+    },
+    {
+      "type": "text",
+      "id": "area",
+      "label": "Service area",
+      "default": "Gold Coast and Brisbane"
+    },
+    {
+      "type": "text",
+      "id": "hours",
+      "label": "Hours",
+      "default": "By appointment"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Side image"
+    },
+    {
+      "type": "text",
+      "id": "image_alt",
+      "label": "Image alt text",
+      "default": "Wallpaper Gurus at work"
+    },
+    {
+      "type": "select",
+      "id": "section_width",
+      "label": "t:settings.width",
+      "options": [
+        { "value": "page-width", "label": "t:options.page" },
+        { "value": "full-width", "label": "t:options.full" }
+      ],
+      "default": "page-width"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "t:settings.background_color",
+      "placeholder": "t:settings.default"
+    },
+    {
+      "type": "header",
+      "content": "t:content.padding"
+    },
+    {
+      "type": "range",
+      "id": "padding-block-start",
+      "label": "t:settings.top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "padding-block-end",
+      "label": "t:settings.bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 80
+    }
+  ],
+  "presets": [
+    {
+      "name": "Contact page",
+      "category": "t:categories.forms"
+    }
+  ]
+}
+{% endschema %}

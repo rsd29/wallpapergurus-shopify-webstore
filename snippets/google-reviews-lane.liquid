@@ -1,0 +1,121 @@
+{%- doc -%}
+  One row of Google review cards for the infinite ticker.
+
+  @param {object} [blocks] - Section review blocks
+  @param {number} row - 0 or 1; cards are split across the two lanes
+  @param {string} google_url - Google business reviews URL
+{%- enddoc -%}
+
+{% liquid
+  assign lane_row = row | plus: 0
+  assign block_count = 0
+  if blocks != blank
+    assign block_count = blocks.size
+  endif
+%}
+
+{% if block_count > 0 %}
+  {% for block in blocks %}
+    {% assign lane_index = forloop.index0 | modulo: 2 %}
+    {% if lane_index == lane_row %}
+      {% liquid
+        assign card_link = block.settings.link
+        if card_link == blank
+          assign card_link = google_url
+        endif
+      %}
+      {% render 'google-review-card',
+        author: block.settings.author,
+        date: block.settings.date,
+        rating: block.settings.rating,
+        text: block.settings.text,
+        image: block.settings.image,
+        link: card_link,
+        tone: forloop.index0,
+        shopify_attributes: block.shopify_attributes
+      %}
+    {% endif %}
+  {% endfor %}
+{% elsif lane_row == 0 %}
+  {% render 'google-review-card',
+    author: 'Sarah Mitchell',
+    date: '2 weeks ago',
+    rating: 5,
+    text: 'Absolutely flawless. They hung a feature wall in our living room and the pattern match is perfect down to the millimetre. On time, tidy, and clearly know their craft.',
+    link: google_url,
+    tone: 0
+  %}
+  {% render 'google-review-card',
+    author: 'Priya Nair',
+    date: '3 weeks ago',
+    rating: 5,
+    text: 'We had a tricky textured wall and they still made the paper sit completely flat. Professional from the first call through to the last strip.',
+    link: google_url,
+    tone: 2
+  %}
+  {% render 'google-review-card',
+    author: 'Emma Walsh',
+    date: '5 days ago',
+    rating: 5,
+    text: 'Installed wallpaper throughout our apartment renovation in Broadbeach. Careful, precise, and they treated the place like it was their own.',
+    link: google_url,
+    tone: 4
+  %}
+  {% render 'google-review-card',
+    author: 'Lisa Nguyen',
+    date: '3 months ago',
+    rating: 5,
+    text: 'Booked them for a whole-house paper in Southport. Father and son, no subcontractors, and every seam is invisible. Five stars is not enough.',
+    link: google_url,
+    tone: 6
+  %}
+  {% render 'google-review-card',
+    author: 'Rebecca Shaw',
+    date: 'a month ago',
+    rating: 5,
+    text: 'Our Brisbane rental needed a feature wall done properly. They measured, hung, and cleaned up the same day. Guests keep asking who did it.',
+    link: google_url,
+    tone: 8
+  %}
+{% else %}
+  {% render 'google-review-card',
+    author: 'James Thornton',
+    date: 'a month ago',
+    rating: 5,
+    text: 'Father and son team measured everything themselves and had the install done in a day. No fuss, no leftover mess. This is how trades should work.',
+    link: google_url,
+    tone: 1
+  %}
+  {% render 'google-review-card',
+    author: 'David Chen',
+    date: '2 months ago',
+    rating: 5,
+    text: 'Quoted fairly, arrived when they said they would, and the hallway looks like it belongs in a magazine. Would not use anyone else on the Gold Coast.',
+    link: google_url,
+    tone: 3
+  %}
+  {% render 'google-review-card',
+    author: 'Michael O’Brien',
+    date: '6 weeks ago',
+    rating: 5,
+    text: 'Had wallpaper hung in our hallway and powder room in Paddington. The finish is immaculate. Easy to deal with, and proud of their work — you can tell.',
+    link: google_url,
+    tone: 5
+  %}
+  {% render 'google-review-card',
+    author: 'Tom Bradley',
+    date: '4 weeks ago',
+    rating: 5,
+    text: 'High ceilings, awkward corners, expensive paper. They treated it like a craft, not a job. The Gold Coast is lucky to have them.',
+    link: google_url,
+    tone: 7
+  %}
+  {% render 'google-review-card',
+    author: 'Chris Patel',
+    date: '2 weeks ago',
+    rating: 5,
+    text: 'From the first site visit to the last wipe-down, completely painless. The pattern match across our stairwell is something I did not think was possible.',
+    link: google_url,
+    tone: 9
+  %}
+{% endif %}

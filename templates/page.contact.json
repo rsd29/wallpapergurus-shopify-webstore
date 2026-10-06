@@ -1,0 +1,55 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "contact": {
+      "type": "contact-page",
+      "blocks": {
+        "contact-form": {
+          "type": "contact-form",
+          "static": true,
+          "settings": {
+            "width": "custom",
+            "custom_width": 100,
+            "width_mobile": "custom",
+            "custom_width_mobile": 100
+          },
+          "blocks": {
+            "submit-button": {
+              "type": "contact-form-submit-button",
+              "static": true,
+              "settings": {
+                "label": "Submit",
+                "style_class": "button"
+              },
+              "blocks": {}
+            }
+          },
+          "block_order": []
+        }
+      },
+      "block_order": [],
+      "settings": {
+        "heading": "Let’s talk.",
+        "subheading": "Ask about wallpaper, quantities, or a hang. Send a few photos of the room if you have them.",
+        "phone": "0451 157 022",
+        "email": "team@wallpapergurus.com",
+        "area": "Gold Coast and Brisbane",
+        "hours": "By appointment",
+        "section_width": "page-width",
+        "padding-block-start": 80,
+        "padding-block-end": 80
+      }
+    }
+  },
+  "order": [
+    "contact"
+  ]
+}

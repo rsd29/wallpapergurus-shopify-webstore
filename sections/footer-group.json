@@ -1,0 +1,49 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "type": "footer",
+  "name": "Footer",
+  "sections": {
+    "wallpaper_gurus_footer": {
+      "type": "wallpaper-gurus-footer",
+      "name": "Wallpaper Gurus footer",
+      "settings": {
+        "about_url": "/pages/about",
+        "collections_url": "shopify://collections/all",
+        "privacy_policy_url": "/pages/privacy-policy",
+        "terms_of_use_url": "/pages/terms-of-use",
+        "installation_url": "/pages/installation",
+        "contact_url": "/pages/contact",
+        "newsletter_url": "",
+        "facebook_url": "https://www.facebook.com/profile.php?id=61586818075165",
+        "instagram_url": "https://www.instagram.com/wallpaper_gurus",
+        "address": "Gold Coast and Brisbane,\nQueensland",
+        "opening_hours": "By appointment",
+        "show_legal_notice": true,
+        "show_payment_icons": false,
+        "company_name": "Wallpaper Gurus Pty Ltd",
+        "phone": "61 451 157 022",
+        "email": "team@wallpapergurus.com",
+        "abn": "",
+        "copyright_name": "Wallpaper Gurus",
+        "designer_credit": "Designed by RSD",
+        "background_color": "#0b1d36",
+        "text_color": "#ffffff",
+        "muted_text_color": "#d5dce8",
+        "section_width": "page-width",
+        "padding-block-start": 0,
+        "padding-block-end": 0
+      }
+    }
+  },
+  "order": [
+    "wallpaper_gurus_footer"
+  ]
+}

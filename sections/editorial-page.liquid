@@ -1,0 +1,486 @@
+{% liquid
+  assign handle = page.handle | default: ''
+  assign title_down = page.title | downcase | strip
+  assign cms_text = page.content | strip_html | strip
+  assign has_cms = false
+  if cms_text != blank
+    assign has_cms = true
+  endif
+
+  assign preset = 'generic'
+  if handle == 'about' or title_down == 'about'
+    assign preset = 'about'
+  elsif handle == 'services' or handle == 'installation' or title_down contains 'service' or title_down contains 'install'
+    assign preset = 'installation'
+  elsif handle == 'gallery'
+    assign preset = 'gallery'
+  elsif handle contains 'privacy'
+    assign preset = 'privacy'
+  elsif handle contains 'terms'
+    assign preset = 'terms'
+  endif
+
+  case preset
+    when 'about'
+      assign heading = 'Four generations.'
+      assign heading_break = 'Since 1926.'
+      assign lede = 'Robert Bryant started hanging wallpaper in London in 1926. Four generations later, his family is still the one on the ladder on the Gold Coast and in Brisbane.'
+    when 'installation'
+      assign heading = 'Commercial & Residential'
+      assign heading_break = 'Installation'
+      assign lede = 'Wallpaper installation for homes, offices, and commercial fit outs. Clean joins. Flawless finish. On time.'
+      assign lede_more = 'From single feature walls to full scale fit outs.'
+    when 'gallery'
+      assign heading = 'On the wall.'
+      assign heading_break = ''
+      assign lede = 'Feature walls, whole rooms, and commercial interiors. A small look at papers we have hung in homes across the Gold Coast and Brisbane.'
+    when 'privacy'
+      assign heading = 'Privacy policy.'
+      assign heading_break = ''
+      assign lede = 'How Wallpaper Gurus collects, uses, and looks after personal information.'
+    when 'terms'
+      assign heading = 'Terms of use.'
+      assign heading_break = ''
+      assign lede = 'The terms that apply when you browse, enquire, or buy from Wallpaper Gurus.'
+    else
+      assign heading = page.title
+      assign heading_break = ''
+      assign lede = 'Wallpaper Gurus. Fourth-generation installers, Gold Coast and Brisbane.'
+  endcase
+
+  if section.settings.background_color != blank
+    render 'contrast-override', background_color: section.settings.background_color, section_id: section.id
+  endif
+%}
+
+<div
+  class="section-background{% if section.settings.background_color != blank %} color-custom-{{ section.id }}{% endif %}"
+></div>
+
+<div
+  class="editorial-page section section--{{ section.settings.section_width }} spacing-style{% if section.settings.background_color != blank %} color-custom-{{ section.id }}{% endif %}"
+  style="{% render 'spacing-style', settings: section.settings %}"
+>
+  <div class="editorial-page__inner">
+    <header class="editorial-page__mast">
+      <h1 class="editorial-page__heading">
+        {{ heading | escape }}{% if heading_break != blank %}<br>{{ heading_break | escape }}{% endif %}
+      </h1>
+      {% if lede != blank or lede_more != blank %}
+        <div class="editorial-page__lede-stack">
+          {% if lede != blank %}
+            <p class="editorial-page__lede">{{ lede | escape }}</p>
+          {% endif %}
+          {% if lede_more != blank %}
+            <p class="editorial-page__lede">{{ lede_more | escape }}</p>
+          {% endif %}
+        </div>
+      {% endif %}
+    </header>
+
+    {% if has_cms %}
+      <div class="editorial-page__cms rte">{{ page.content }}</div>
+    {% endif %}
+
+    {% unless has_cms %}
+      {% case preset %}
+        {% when 'about' %}
+          <div class="editorial-page__media">
+            <img
+              class="editorial-page__image"
+              src="{{ 'craft-still-windows.jpg' | asset_url }}"
+              alt="Striped wallpaper in a bedroom with plantation shutters"
+              width="1400"
+              height="1400"
+              loading="eager"
+            >
+          </div>
+
+          <div class="editorial-page__rows">
+            <article class="editorial-page__row">
+              <h2 class="editorial-page__kicker">The family</h2>
+              <p class="editorial-page__copy">
+                Wallpaper hanging has sat in this family since 1926. Father and son still measure, cut, and hang the paper themselves. Nothing is subcontracted out, and nothing is left until the match is right.
+              </p>
+            </article>
+            <article class="editorial-page__row">
+              <h2 class="editorial-page__kicker">The work</h2>
+              <p class="editorial-page__copy">
+                We hang residential feature walls, whole-home papers, and commercial interiors. Grasscloth, vinyl, non-woven, mural, and delicate hand-printed papers are all in a day’s work. If the wall is wrong, we say so before a roll is opened.
+              </p>
+            </article>
+            <article class="editorial-page__row">
+              <h2 class="editorial-page__kicker">The shop</h2>
+              <p class="editorial-page__copy">
+                The papers here are ones we know how to hang. Browse, ask for a quantity, or book us to install. Gold Coast and Brisbane based, working across Australia when the job calls for it.
+              </p>
+            </article>
+          </div>
+
+        {% when 'installation' %}
+          <div class="editorial-page__rows">
+            <article class="editorial-page__row editorial-page__row--service">
+              <h2 class="editorial-page__kicker">Advice, Quantities &amp; Sourcing</h2>
+              <div class="editorial-page__copy-stack">
+                <p class="editorial-page__copy">
+                  We provide accurate quantity calculations and recommend wallpaper we know installs well and performs long term.
+                </p>
+                <p class="editorial-page__copy">
+                  From high quality, good value options to premium designer finishes, we guide you toward products that look exceptional and stand the test of time.
+                </p>
+                <p class="editorial-page__copy">
+                  No guesswork. No costly mistakes. No living with the wrong choice.
+                </p>
+              </div>
+            </article>
+            <article class="editorial-page__row editorial-page__row--service">
+              <h2 class="editorial-page__kicker">Wallpaper Removal &amp; Wall Preparation</h2>
+              <div class="editorial-page__copy-stack">
+                <p class="editorial-page__copy">
+                  A flawless finish starts with proper prep. We remove old wallpaper, repair, smooth &amp; seal walls to ensure the best possible result.
+                </p>
+                <p class="editorial-page__copy">
+                  Skipping prep is where most jobs go wrong.
+                </p>
+                <p class="editorial-page__copy">
+                  Wallpaper highlights imperfections, we make sure yours don’t.
+                </p>
+              </div>
+            </article>
+          </div>
+
+          <p class="editorial-page__cta-wrap">
+            <a class="button" href="{{ pages.contact.url | default: '/pages/contact' }}">Request a callback</a>
+          </p>
+
+        {% when 'gallery' %}
+          <div class="editorial-page__gallery">
+            {% assign tiles = 'craft-still-windows.jpg|Feature wall,craft-still-texture.jpg|Bedroom,craft-story-poster.jpg|At work,craft-still-windows.jpg|Shutters,craft-still-texture.jpg|Texture,craft-story-poster.jpg|Install' | split: ',' %}
+            {% for tile in tiles %}
+              {% assign parts = tile | split: '|' %}
+              {% assign tile_file = parts[0] %}
+              {% assign tile_caption = parts[1] %}
+              <figure class="editorial-page__tile">
+                <div class="editorial-page__tile-media editorial-page__tile-media--{{ forloop.index }}">
+                  <img
+                    class="editorial-page__tile-image"
+                    src="{{ tile_file | asset_url }}"
+                    alt="{{ tile_caption | escape }}"
+                    width="900"
+                    height="900"
+                    loading="lazy"
+                  >
+                </div>
+                <figcaption class="editorial-page__caption">{{ tile_caption | escape }}</figcaption>
+              </figure>
+            {% endfor %}
+          </div>
+
+        {% when 'privacy' %}
+          <div class="editorial-page__legal">
+            <p class="editorial-page__copy">Wallpaper Gurus Pty Ltd (ABN as published on this site) is based in Queensland, Australia. This policy explains how we handle personal information under the Privacy Act 1988 (Cth) and the Australian Privacy Principles. It is a working draft for the storefront and will be replaced with the final legal text.</p>
+            <h2 class="editorial-page__kicker">What we collect</h2>
+            <p class="editorial-page__copy">Name, email, phone, delivery address, and the details of an enquiry or order. If you book an install we may also keep site notes, measurements, and photos of the walls you asked us to hang.</p>
+            <h2 class="editorial-page__kicker">Why we collect it</h2>
+            <p class="editorial-page__copy">To answer enquiries, quote, supply wallpaper, arrange installation, process payment, and meet our legal and insurance obligations. We do not sell personal information.</p>
+            <h2 class="editorial-page__kicker">Who we share it with</h2>
+            <p class="editorial-page__copy">Payment providers, shipping partners, and the tools we use to run the shop (including Shopify). We share only what is needed to complete the job.</p>
+            <h2 class="editorial-page__kicker">Access and contact</h2>
+            <p class="editorial-page__copy">Ask us for a copy of the information we hold, or to correct it. Email team@wallpapergurus.com or call 0451 157 022.</p>
+          </div>
+
+        {% when 'terms' %}
+          <div class="editorial-page__legal">
+            <p class="editorial-page__copy">These terms apply to the Wallpaper Gurus website, wallpaper sales, and installation enquiries. They are a working draft for the storefront and will be replaced with the final legal text. Nothing here limits rights you have under the Australian Consumer Law.</p>
+            <h2 class="editorial-page__kicker">Orders</h2>
+            <p class="editorial-page__copy">Wallpaper is supplied by roll or by the length stated on the product. Dye lots can vary. We recommend ordering enough in one go, and checking the paper before it is cut or hung.</p>
+            <h2 class="editorial-page__kicker">Installation</h2>
+            <p class="editorial-page__copy">Installation is quoted separately after a site measure. We are fully insured. Access, wall condition, and paper type all affect the price and the time on site.</p>
+            <h2 class="editorial-page__kicker">Returns</h2>
+            <p class="editorial-page__copy">Unopened, unused wallpaper may be eligible for return within 14 days of delivery. Cut, hung, or custom papers cannot be returned except where the Australian Consumer Law requires it.</p>
+            <h2 class="editorial-page__kicker">Contact</h2>
+            <p class="editorial-page__copy">Wallpaper Gurus, Gold Coast and Brisbane. team@wallpapergurus.com · 0451 157 022.</p>
+          </div>
+
+        {% else %}
+          <div class="editorial-page__rows">
+            <article class="editorial-page__row">
+              <h2 class="editorial-page__kicker">Wallpaper Gurus</h2>
+              <p class="editorial-page__copy">
+                Fourth-generation wallpaper installers. Browse the shop, or get in touch if you would like us on the wall.
+              </p>
+            </article>
+          </div>
+          <p class="editorial-page__cta-wrap">
+            <a class="button" href="{{ pages.contact.url | default: '/pages/contact' }}">Contact us</a>
+          </p>
+      {% endcase %}
+    {% endunless %}
+
+    {% if has_cms and preset == 'gallery' %}
+      <div class="editorial-page__gallery editorial-page__gallery--after-cms">
+        {% assign tiles = 'craft-still-windows.jpg|Feature wall,craft-still-texture.jpg|Bedroom,craft-story-poster.jpg|At work,craft-still-windows.jpg|Shutters,craft-still-texture.jpg|Texture,craft-story-poster.jpg|Install' | split: ',' %}
+        {% for tile in tiles %}
+          {% assign parts = tile | split: '|' %}
+          {% assign tile_file = parts[0] %}
+          {% assign tile_caption = parts[1] %}
+          <figure class="editorial-page__tile">
+            <div class="editorial-page__tile-media editorial-page__tile-media--{{ forloop.index }}">
+              <img
+                class="editorial-page__tile-image"
+                src="{{ tile_file | asset_url }}"
+                alt="{{ tile_caption | escape }}"
+                width="900"
+                height="900"
+                loading="lazy"
+              >
+            </div>
+            <figcaption class="editorial-page__caption">{{ tile_caption | escape }}</figcaption>
+          </figure>
+        {% endfor %}
+      </div>
+    {% endif %}
+  </div>
+</div>
+
+{% stylesheet %}
+  .editorial-page__inner {
+    display: flex;
+    flex-direction: column;
+    gap: clamp(2.25rem, 4vw, 3.75rem);
+    width: 100%;
+  }
+
+  .editorial-page__mast {
+    display: grid;
+    gap: 1.15rem;
+    max-width: 46rem;
+  }
+
+  .editorial-page__heading {
+    margin: 0;
+    font-family: var(--font-heading--family);
+    font-size: clamp(2.5rem, 4.6vw, 4rem);
+    font-weight: 600;
+    line-height: 0.98;
+    letter-spacing: -0.035em;
+  }
+
+  .editorial-page__lede-stack,
+  .editorial-page__copy-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+  }
+
+  .editorial-page__lede,
+  .editorial-page__copy {
+    margin: 0;
+    font-size: 1.0625rem;
+    line-height: 1.6;
+    color: rgb(var(--color-foreground-rgb) / 0.72);
+  }
+
+  .editorial-page__cms {
+    max-width: 40rem;
+    font-size: 1.0625rem;
+    line-height: 1.6;
+    color: rgb(var(--color-foreground-rgb) / 0.78);
+  }
+
+  .editorial-page__cms :first-child {
+    margin-block-start: 0;
+  }
+
+  .editorial-page__media {
+    overflow: hidden;
+    background: rgb(var(--color-foreground-rgb) / 0.05);
+  }
+
+  .editorial-page__image {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+  }
+
+  .editorial-page__rows,
+  .editorial-page__legal {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    max-width: 46rem;
+    border-block: 1px solid rgb(var(--color-foreground-rgb) / 0.14);
+  }
+
+  .editorial-page__row,
+  .editorial-page__legal h2 {
+    margin: 0;
+  }
+
+  .editorial-page__row {
+    display: grid;
+    gap: 0.65rem;
+    padding: 1.35rem 0;
+    border-block-start: 1px solid rgb(var(--color-foreground-rgb) / 0.14);
+  }
+
+  .editorial-page__row:first-child {
+    border-block-start: 0;
+  }
+
+  .editorial-page__kicker {
+    margin: 0;
+    font-family: var(--font-heading--family);
+    font-size: 1.05rem;
+    font-weight: 600;
+    line-height: 1.25;
+    letter-spacing: -0.02em;
+  }
+
+  .editorial-page__legal {
+    padding-block: 0.35rem 1.5rem;
+    gap: 0.85rem;
+  }
+
+  .editorial-page__legal .editorial-page__kicker {
+    margin-block-start: 1.25rem;
+  }
+
+  .editorial-page__cta-wrap {
+    margin: 0;
+  }
+
+  .editorial-page__gallery {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.75rem;
+  }
+
+  .editorial-page__tile {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.55rem;
+    min-width: 0;
+  }
+
+  .editorial-page__tile-media {
+    overflow: hidden;
+    aspect-ratio: 1;
+    background: rgb(var(--color-foreground-rgb) / 0.05);
+  }
+
+  .editorial-page__tile-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .editorial-page__tile-media--2 .editorial-page__tile-image,
+  .editorial-page__tile-media--5 .editorial-page__tile-image {
+    object-position: 70% 50%;
+  }
+
+  .editorial-page__tile-media--4 .editorial-page__tile-image {
+    object-position: 20% 80%;
+  }
+
+  .editorial-page__caption {
+    margin: 0;
+    font-size: 0.8125rem;
+    line-height: 1.4;
+    color: rgb(var(--color-foreground-rgb) / 0.62);
+  }
+
+  @media screen and (min-width: 750px) {
+    .editorial-page__mast {
+      grid-template-columns: minmax(0, 1.1fr) minmax(14rem, 0.9fr);
+      align-items: end;
+      max-width: none;
+      gap: 2.5rem;
+    }
+
+    .editorial-page__image {
+      aspect-ratio: 16 / 8;
+    }
+
+    .editorial-page__row {
+      grid-template-columns: minmax(10rem, 14rem) minmax(0, 1fr);
+      gap: 2rem;
+      align-items: start;
+    }
+
+    .editorial-page__row--service {
+      grid-template-columns: minmax(12rem, 18rem) minmax(0, 1fr);
+    }
+
+    .editorial-page__gallery {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 1rem;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Editorial page",
+  "tag": "section",
+  "class": "editorial-page-section",
+  "enabled_on": {
+    "templates": ["page"]
+  },
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "Fills About, Services, Gallery, Privacy, and Terms with matching homepage layout when the page body is empty."
+    },
+    {
+      "type": "select",
+      "id": "section_width",
+      "label": "t:settings.width",
+      "options": [
+        { "value": "page-width", "label": "t:options.page" },
+        { "value": "full-width", "label": "t:options.full" }
+      ],
+      "default": "page-width"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "t:settings.background_color"
+    },
+    {
+      "type": "header",
+      "content": "t:content.padding"
+    },
+    {
+      "type": "range",
+      "id": "padding-block-start",
+      "label": "t:settings.top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "padding-block-end",
+      "label": "t:settings.bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 80
+    }
+  ],
+  "presets": [
+    {
+      "name": "Editorial page",
+      "category": "t:categories.storytelling"
+    }
+  ]
+}
+{% endschema %}

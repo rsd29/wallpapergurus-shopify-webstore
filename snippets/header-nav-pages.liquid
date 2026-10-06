@@ -1,0 +1,62 @@
+{% doc %}
+  Builds the header nav from published Shopify pages.
+
+  @param {string} variant - `desktop` or `mobile`
+{% enddoc %}
+
+{% liquid
+  assign legal_handles = 'privacy-policy,privacy,terms-of-use,terms-of-service,terms' | split: ','
+  assign excluded_handles = 'contact,contact-us' | split: ','
+  assign preferred_handles = 'about,installation,services,returns-policy' | split: ','
+  assign shown_handles = 'shop,'
+  assign shop_page = pages['shop']
+  assign shop_url = routes.all_products_collection_url
+  if shop_page != blank
+    assign shop_url = shop_page.url
+  endif
+%}
+
+{% render 'header-nav-page-item', title: 'Shop', url: shop_url, handle: 'shop', variant: variant %}
+
+{% for handle in preferred_handles %}
+  {% assign nav_page = pages[handle] %}
+  {% if nav_page != blank %}
+    {% assign shown_handles = shown_handles | append: handle | append: ',' %}
+    {% render 'header-nav-page-item', nav_page: nav_page, variant: variant %}
+  {% endif %}
+{% endfor %}
+
+{% for nav_page in pages %}
+  {% assign handle_token = nav_page.handle | append: ',' %}
+  {% if shown_handles contains handle_token %}
+    {% continue %}
+  {% endif %}
+  {% if legal_handles contains nav_page.handle or excluded_handles contains nav_page.handle %}
+    {% continue %}
+  {% endif %}
+  {% assign nav_title = nav_page.title | downcase %}
+  {% if nav_title == 'contact' or nav_title == 'contact us' %}
+    {% continue %}
+  {% endif %}
+  {% render 'header-nav-page-item', nav_page: nav_page, variant: variant %}
+{% endfor %}
+
+{% liquid
+  assign contact_page = pages['contact']
+  if contact_page == blank
+    assign contact_page = pages['contact-us']
+  endif
+  assign contact_url = '/pages/contact'
+  assign contact_handle = 'contact'
+  if contact_page != blank
+    assign contact_url = contact_page.url
+    assign contact_handle = contact_page.handle
+  endif
+%}
+
+{% render 'header-nav-page-item',
+  title: 'Contact Us',
+  url: contact_url,
+  handle: contact_handle,
+  variant: variant
+%}

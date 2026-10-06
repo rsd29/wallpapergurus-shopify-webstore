@@ -1,0 +1,180 @@
+{% doc %}
+  Shop overlay: left-hand catalog panel with collections, product types, and key pages.
+{% enddoc %}
+
+{% liquid
+  assign all_url = routes.all_products_collection_url
+  assign current_handle = collection.handle | default: ''
+  assign about_page = pages['about']
+  assign installation_page = pages['installation']
+  if installation_page == blank
+    assign installation_page = pages['services']
+  endif
+%}
+
+<div
+  class="shop-overlay__backdrop"
+  data-shop-overlay-backdrop
+  hidden
+  aria-hidden="true"
+></div>
+
+<aside
+  class="shop-overlay"
+  id="shop-overlay"
+  data-shop-overlay
+  hidden
+  aria-hidden="true"
+>
+  <nav class="shop-overlay__panel" aria-label="Shop">
+    <ul class="shop-overlay__list list-unstyled">
+      <li>
+        <a
+          href="{{ all_url }}"
+          class="shop-overlay__link{% if current_handle == 'all' %} shop-overlay__link--active{% endif %}"
+          {% if current_handle == 'all' %}aria-current="page"{% endif %}
+        >
+          All products
+        </a>
+      </li>
+
+      {% for catalog_collection in collections %}
+        {% if catalog_collection.handle == 'all' or catalog_collection.products_count == 0 %}
+          {% continue %}
+        {% endif %}
+        <li>
+          <a
+            href="{{ catalog_collection.url }}"
+            class="shop-overlay__link{% if current_handle == catalog_collection.handle %} shop-overlay__link--active{% endif %}"
+            {% if current_handle == catalog_collection.handle %}aria-current="page"{% endif %}
+          >
+            {{ catalog_collection.title | escape }}
+          </a>
+        </li>
+      {% endfor %}
+
+      {% if shop.types.size > 0 %}
+        <li class="shop-overlay__divider" aria-hidden="true"></li>
+
+        {% for product_type in shop.types %}
+          {% if product_type == blank %}
+            {% continue %}
+          {% endif %}
+          <li>
+            <a href="{{ product_type | url_for_type }}" class="shop-overlay__link">
+              {{ product_type | escape }}
+            </a>
+          </li>
+        {% endfor %}
+      {% endif %}
+
+      {% if about_page != blank or installation_page != blank %}
+        <li class="shop-overlay__divider" aria-hidden="true"></li>
+      {% endif %}
+
+      {% if about_page != blank %}
+        <li>
+          <a href="{{ about_page.url }}" class="shop-overlay__link">About</a>
+        </li>
+      {% endif %}
+      {% if installation_page != blank %}
+        <li>
+          <a href="{{ installation_page.url }}" class="shop-overlay__link">{{ installation_page.title | escape }}</a>
+        </li>
+      {% endif %}
+    </ul>
+  </nav>
+</aside>
+
+<script
+  type="module"
+  src="{{ 'shop-overlay.js' | asset_url }}"
+  fetchpriority="low"
+></script>
+
+{% stylesheet %}
+  .shop-overlay__backdrop,
+  .shop-overlay {
+    position: fixed;
+    top: var(--shop-overlay-top, calc(var(--header-height, 0px) - 1px));
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: calc(var(--layer-menu-drawer) - 1);
+    margin: 0;
+    pointer-events: none;
+    visibility: hidden;
+    opacity: 0;
+  }
+
+  .shop-overlay {
+    z-index: var(--layer-menu-drawer);
+    padding: var(--padding-xl, 1.5rem) var(--page-margin, 1rem);
+  }
+
+  .shop-overlay__backdrop.is-visible,
+  .shop-overlay.is-open {
+    visibility: visible;
+    opacity: 1;
+  }
+
+  .shop-overlay__backdrop.is-visible {
+    pointer-events: auto;
+    background: rgb(var(--color-foreground-rgb) / 0.35);
+  }
+
+  .shop-overlay.is-open .shop-overlay__panel {
+    pointer-events: auto;
+  }
+
+  .shop-overlay__panel {
+    display: flex;
+    flex-direction: column;
+    width: min(20rem, 100%);
+    max-height: 100%;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
+
+  .shop-overlay__list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+  }
+
+  .shop-overlay__divider {
+    width: 100%;
+    height: 0;
+    margin-block: 0.85rem 0.7rem;
+    border-block-start: 1px solid rgb(var(--color-foreground-rgb) / 0.2);
+  }
+
+  .shop-overlay__link {
+    display: block;
+    padding-block: 0.45rem;
+    color: inherit;
+    text-decoration: none;
+    transition: opacity 0.3s ease;
+  }
+
+  @media (hover: hover) {
+    .shop-overlay__link:is(:hover, :focus-visible) {
+      opacity: 0.55;
+    }
+  }
+
+  .shop-overlay__link--active {
+    font-weight: 500;
+  }
+
+  @media screen and (min-width: 750px) {
+    .shop-overlay__backdrop,
+    .shop-overlay {
+      right: auto;
+      width: calc((100% - var(--page-scrollbar-width, 0px)) / 3);
+    }
+  }
+{% endstylesheet %}

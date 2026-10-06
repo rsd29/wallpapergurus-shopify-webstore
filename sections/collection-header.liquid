@@ -1,0 +1,139 @@
+{% liquid
+  if section.settings.background_color != blank
+    render 'contrast-override', background_color: section.settings.background_color, section_id: section.id
+  endif
+
+  assign title_text = section.settings.heading_override
+  if title_text == blank
+    if collection.handle == 'all'
+      assign title_text = 'All products'
+    else
+      assign title_text = collection.title
+    endif
+  endif
+
+  assign products_count = collection.products_count | default: 0
+%}
+
+<div
+  class="section-background{% if section.settings.background_color != blank %} color-custom-{{ section.id }}{% endif %}"
+></div>
+<div
+  class="section section--page-width{% if section.settings.background_color != blank %} color-custom-{{ section.id }}{% endif %}"
+>
+  <div class="collection-page-header spacing-style" style="{% render 'spacing-style', settings: section.settings %}">
+    <div class="collection-page-header__row">
+      <h1 class="collection-page-header__heading">
+        <span class="collection-page-header__title">{{ title_text | escape }}</span>
+      </h1>
+
+      <p class="collection-page-header__count" role="status" data-testid="products-count">
+        {% if products_count > 25000 %}
+          {{- 'content.item_count_cutoff' | t: count: 25000 -}}
+        {% else %}
+          {{- 'content.item_count' | t: count: products_count -}}
+        {% endif %}
+      </p>
+    </div>
+
+    {% if section.settings.show_description and collection.description != blank %}
+      <div class="collection-page-header__description rte">
+        {{ collection.description }}
+      </div>
+    {% endif %}
+  </div>
+</div>
+
+{% stylesheet %}
+  .collection-page-header {
+    width: 100%;
+  }
+
+  .collection-page-header__row {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem 1.5rem;
+    width: 100%;
+  }
+
+  .collection-page-header__heading,
+  .collection-page-header__count {
+    margin: 0;
+    min-width: 0;
+    font-family: var(--font-body--family);
+    font-style: normal;
+    font-weight: 300;
+    font-size: 0.875rem;
+    line-height: 1.4;
+    letter-spacing: normal;
+    text-transform: none;
+    color: var(--color-foreground);
+  }
+
+  .collection-page-header__count {
+    flex-shrink: 0;
+  }
+
+  .collection-page-header__description {
+    margin-block-start: 1rem;
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Collection heading",
+  "enabled_on": {
+    "templates": ["collection"]
+  },
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading_override",
+      "label": "Heading override",
+      "info": "Leave blank to use the collection name."
+    },
+    {
+      "type": "checkbox",
+      "id": "show_description",
+      "label": "Show collection description",
+      "default": true
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "t:settings.background_color",
+      "placeholder": "t:settings.default"
+    },
+    {
+      "type": "header",
+      "content": "t:content.padding"
+    },
+    {
+      "type": "range",
+      "id": "padding-block-start",
+      "label": "t:settings.top",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "padding-block-end",
+      "label": "t:settings.bottom",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 12
+    }
+  ],
+  "presets": [
+    {
+      "name": "Collection heading"
+    }
+  ]
+}
+{% endschema %}

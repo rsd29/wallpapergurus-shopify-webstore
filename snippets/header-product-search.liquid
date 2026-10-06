@@ -1,0 +1,180 @@
+{% doc %}
+  Header product search — icon toggle opens a name/SKU overlay under the header.
+
+  @param {object} section - Header section for unique IDs
+{% enddoc %}
+
+{% liquid
+  assign header_search_id = 'HeaderProductSearch-' | append: section.id
+%}
+
+<div class="header-product-search" data-header-product-search>
+  <button
+    type="button"
+    class="header-actions__action header-actions__search-toggle button-unstyled"
+    aria-label="{{ 'content.search_input_label' | t }}"
+    aria-expanded="false"
+    aria-controls="{{ header_search_id }}-panel"
+    data-header-product-search-toggle
+  >
+    <span class="svg-wrapper" aria-hidden="true">
+      {{ 'icon-search.svg' | inline_asset_content }}
+    </span>
+  </button>
+
+  <div
+    id="{{ header_search_id }}-panel"
+    class="header-product-search__panel"
+    hidden
+    data-header-product-search-panel
+  >
+    <div class="header-product-search__form" data-product-search>
+      <label class="visually-hidden" for="{{ header_search_id }}-input">
+        {{ 'content.search_input_label' | t }}
+      </label>
+      <input
+        id="{{ header_search_id }}-input"
+        class="header-product-search__input"
+        type="search"
+        placeholder="Search by name or SKU"
+        autocomplete="off"
+        autocapitalize="off"
+        spellcheck="false"
+        aria-controls="{{ header_search_id }}-results"
+        aria-expanded="false"
+        data-product-search-input
+      >
+      <div
+        id="{{ header_search_id }}-results"
+        class="header-product-search__results"
+        role="listbox"
+        hidden
+        data-product-search-results
+      ></div>
+      {% paginate collections.all.products by 250 %}
+        {% render 'product-search-data', products: collections.all.products %}
+      {% endpaginate %}
+    </div>
+  </div>
+</div>
+
+<script
+  type="module"
+  src="{{ 'header-product-search.js' | asset_url }}"
+  fetchpriority="low"
+></script>
+
+{% stylesheet %}
+  .header-product-search {
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+
+  .header-product-search-backdrop {
+    position: fixed;
+    top: var(--header-product-search-top, calc(var(--header-height, 0px) - 1px));
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: calc(var(--layer-menu-drawer) - 1);
+    pointer-events: none;
+    visibility: hidden;
+    opacity: 0;
+    background: rgb(var(--color-foreground-rgb) / 0.35);
+  }
+
+  .header-product-search-backdrop.is-visible {
+    visibility: visible;
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .header-product-search__panel {
+    position: fixed;
+    top: var(--header-product-search-top, calc(var(--header-height, 0px) - 1px));
+    right: 0;
+    left: 0;
+    z-index: var(--layer-menu-drawer);
+    padding: var(--padding-xl, 1.5rem) var(--page-margin, 1rem);
+    pointer-events: none;
+  }
+
+  .header-product-search__form {
+    position: relative;
+    width: min(36rem, 100%);
+    margin-inline-start: auto;
+    pointer-events: auto;
+  }
+
+  .header-product-search__input {
+    width: 100%;
+    min-height: 2.75rem;
+    padding: 0.65rem 0;
+    border: 0;
+    border-bottom: 1px solid rgb(var(--color-foreground-rgb) / 0.45);
+    background: transparent;
+    color: inherit;
+  }
+
+  .header-product-search__results {
+    position: absolute;
+    inset-inline: 0;
+    top: calc(100% + 1rem);
+    display: flex;
+    flex-direction: column;
+    gap: 0.55rem;
+    max-height: min(32rem, calc(100dvh - var(--header-height, 0px) - 7rem));
+    overflow-y: auto;
+  }
+
+  .header-product-search__option {
+    display: flex;
+    align-items: stretch;
+    width: 100%;
+    min-height: 5.25rem;
+    padding: 0;
+    border: 1px solid rgb(var(--color-foreground-rgb) / 0.2);
+    background: transparent;
+    color: inherit;
+    text-align: left;
+    cursor: pointer;
+  }
+
+  .header-product-search__option-image {
+    flex: 0 0 4.25rem;
+    width: 4.25rem;
+    overflow: hidden;
+  }
+
+  .header-product-search__option-image img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .header-product-search__option-content {
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0.38rem;
+    min-width: 0;
+    padding: 0.7rem;
+  }
+
+  @media screen and (min-width: 750px) {
+    .header-product-search-backdrop,
+    .header-product-search__panel {
+      right: var(--page-scrollbar-width, 0px);
+      left: auto;
+      width: calc((100% - var(--page-scrollbar-width, 0px)) / 3);
+    }
+
+    .header-product-search__form {
+      width: 100%;
+      margin-inline: 0;
+    }
+  }
+{% endstylesheet %}

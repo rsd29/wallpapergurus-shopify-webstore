@@ -1,0 +1,12 @@
+---
+description: Never start theme previews or verify UI in a browser for this project
+alwaysApply: true
+---
+
+# No preview or browser verification
+
+Do not start Shopify theme preview (`shopify theme dev`), local servers, Cursor browser tabs, screenshots, or any other live-page preview to check work.
+
+Do not use browser tools for this project unless the user explicitly asks to open a page.
+
+After code changes, stop. Do not verify layout or behavior in a browser.

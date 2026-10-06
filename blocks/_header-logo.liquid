@@ -1,0 +1,259 @@
+
+
+{% liquid
+  assign block_settings = block.settings
+  assign use_inverse_logo = false
+
+  if section.settings.enable_transparent_header_home and template.name == 'index' and section.settings.home_inverse_logo == true
+    assign use_inverse_logo = true
+  elsif section.settings.enable_transparent_header_product and template.name == 'product' and section.settings.product_inverse_logo == true
+    assign use_inverse_logo = true
+  elsif section.settings.enable_transparent_header_collection and template.name == 'collection' and section.settings.collection_inverse_logo == true
+    assign use_inverse_logo = true
+  endif
+
+  if use_inverse_logo
+    if settings.logo_inverse != blank
+      assign inverse_logo = settings.logo_inverse
+    else
+      assign inverse_logo = settings.logo
+    endif
+  endif
+
+  assign alt_text_fallback = 'accessibility.home_logo_alt' | t: store_name: shop.name
+%}
+
+{% comment %}
+  Output all logo variants, use CSS to hide/show the appropriate one
+  based on the .header[transparent] selector
+{% endcomment %}
+<a
+  {% if template.name == 'index' and block_settings.hide_logo_on_home_page %}
+    data-hidden-on-home-page
+  {% endif %}
+  {% if template.name == 'index' %}
+    data-header-logo-scale
+  {% endif %}
+  href="{{ routes.root_url }}"
+  class="size-style spacing-style header-logo"
+  style="
+    {% render 'size-style', settings: block_settings %}
+    {% render 'spacing-style', settings: block_settings %}
+    --font-family: var(--font-body--family);
+    --font-style: var(--font-body--style);
+    --font-weight: 600;
+  "
+  {{ block.shopify_attributes }}
+>
+  {% liquid
+    assign logo_ratio = settings.logo.aspect_ratio | default: 3.0
+    assign inverse_ratio = inverse_logo.aspect_ratio | default: logo_ratio
+    assign logo_width = settings.logo_height | times: logo_ratio | ceil
+    assign logo_width_mobile = settings.logo_height_mobile | times: logo_ratio | ceil
+    assign inverse_logo_width = settings.logo_height | times: inverse_ratio | ceil
+    assign inverse_logo_width_mobile = settings.logo_height_mobile | times: inverse_ratio | ceil
+    assign logo_style = '--header-logo-image-width: ' | append: logo_width | append: 'px;' | append: '--header-logo-image-width-mobile: ' | append: logo_width_mobile | append: 'px; --header-logo-image-height: ' | append: settings.logo_height | append: 'px; --header-logo-image-height-mobile: ' | append: settings.logo_height_mobile | append: 'px;'
+    assign inverse_logo_style = '--header-logo-image-width: ' | append: inverse_logo_width | append: 'px;' | append: '--header-logo-image-width-mobile: ' | append: inverse_logo_width_mobile | append: 'px; --header-logo-image-height: ' | append: settings.logo_height | append: 'px; --header-logo-image-height-mobile: ' | append: settings.logo_height_mobile | append: 'px;'
+    assign logo_image_height = settings.logo_height | times: 4
+  %}
+
+  <span
+    {% if use_inverse_logo %}
+      class="header-logo__solid-header-image-container"
+    {% endif %}
+    data-testid="header-logo"
+  >
+    {% render 'image',
+      image: settings.logo,
+      class: 'header-logo__image',
+      height: logo_image_height,
+      alt_text_fallback: alt_text_fallback,
+      text_fallback: shop.name,
+      style: logo_style
+    %}
+  </span>
+
+  {% if use_inverse_logo %}
+    <span
+      class="header-logo__transparent-header-image-container"
+      data-testid="header-logo-inverse"
+    >
+      {% render 'image',
+        image: inverse_logo,
+        class: 'header-logo__image',
+        height: logo_image_height,
+        alt_text_fallback: alt_text_fallback,
+        text_fallback: shop.name,
+        style: inverse_logo_style
+      %}
+    </span>
+  {% endif %}
+</a>
+
+<script
+  src="{{ 'header-logo-scale.js' | asset_url }}"
+  type="module"
+></script>
+
+{% stylesheet %}
+  .header__row--top .header-logo {
+    translate: var(--header-logo-nudge-x, 0px) 0;
+  }
+
+  .header__row--top .header__icon--menu,
+  .header__row--top .header-contact {
+    position: relative;
+    z-index: 2;
+  }
+
+  .header-logo {
+    display: flex;
+    height: 100%;
+    font-size: var(--font-size--md);
+    font-family: var(--font-family);
+    font-weight: var(--font-weight);
+    font-style: var(--font-style);
+    color: var(--color-foreground);
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+    overflow: visible;
+    z-index: 1;
+    --header-logo-scale: 2.1;
+
+    &[data-header-logo-scale] {
+      --header-logo-scale-top: 2.4;
+      --header-logo-scale-end: 2.1;
+      --header-logo-scale: calc(
+        var(--header-logo-scale-top) -
+          (var(--header-logo-scale-top) - var(--header-logo-scale-end)) * var(--header-logo-progress, 0)
+      );
+
+      @media screen and (min-width: 750px) {
+        --header-logo-scale-top: 3.2;
+        --header-logo-scale-end: 2.1;
+      }
+    }
+
+    &[data-hidden-on-home-page] {
+      display: none;
+
+      #header-component:is(
+          [sticky='always']:not([data-scroll-direction='none']),
+          [sticky='scroll-up'][data-scroll-direction='up']
+        )
+        & {
+        display: flex;
+      }
+    }
+
+    @media screen and (max-width: 749px) {
+      padding: 0;
+    }
+
+    @media screen and (min-width: 750px) {
+      flex-shrink: 0;
+    }
+
+    &:hover {
+      text-decoration: none;
+    }
+  }
+
+  .header-logo__image {
+    --header-logo-shift: calc(
+      var(--header-logo-progress, 0) * var(--header-logo-image-height-mobile) * (1 - var(--header-logo-scale)) / 2
+    );
+    --header-logo-lift: calc((1 - var(--header-logo-progress, 0)) * -10px);
+
+    object-fit: contain;
+    height: var(--header-logo-image-height-mobile);
+    width: var(--header-logo-image-width-mobile);
+    filter: brightness(0);
+    transform: translateY(calc(var(--header-logo-shift) + var(--header-logo-lift) + 2px)) scale(var(--header-logo-scale));
+    transform-origin: center center;
+
+    .header-logo[data-header-logo-scale] & {
+      transform-origin: center top;
+    }
+    will-change: transform;
+    transition: filter 0.45s var(--ease-out-cubic);
+
+    @media screen and (min-width: 750px) {
+      --header-logo-shift: calc(
+        var(--header-logo-progress, 0) * var(--header-logo-image-height) * (1 - var(--header-logo-scale)) / 2
+      );
+      --header-logo-lift: calc((1 - var(--header-logo-progress, 0)) * -16px);
+
+      height: var(--header-logo-image-height);
+      width: var(--header-logo-image-width);
+    }
+  }
+
+  .header[transparent='not-sticky']:not([data-sticky-state='active']):not(:has(.menu-list__link:hover)):not(
+      :has(header-menu[aria-expanded='true'])
+    )
+    .header-logo__image {
+    filter: brightness(0) invert(1);
+  }
+
+  .header-logo__solid-header-image-container {
+    display: var(--header-logo-display, block);
+  }
+
+  .header-logo__transparent-header-image-container {
+    display: var(--header-logo-inverse-display, none);
+
+    .header-logo__image {
+      filter: none;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "t:names.logo",
+  "tag": null,
+  "class": "header-logo",
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "t:content.edit_logo_in_theme_settings"
+    },
+    {
+      "type": "header",
+      "content": "t:content.visibility"
+    },
+    {
+      "type": "checkbox",
+      "id": "hide_logo_on_home_page",
+      "label": "t:settings.hide_logo_on_home_page",
+      "info": "t:info.hide_logo_on_home_page_help"
+    },
+    {
+      "type": "header",
+      "content": "t:content.padding_desktop"
+    },
+    {
+      "type": "range",
+      "id": "padding-block-start",
+      "label": "t:settings.top",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding-block-end",
+      "label": "t:settings.bottom",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    }
+  ]
+}
+{% endschema %}

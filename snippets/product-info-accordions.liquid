@@ -1,0 +1,128 @@
+{% doc %}
+  Product-page accordions for installation, care, shipping, and returns.
+{% enddoc %}
+
+{% liquid
+  assign installation_guide = product.metafields.custom.installation_guide
+  assign coverage_guide = product.metafields.custom.coverage
+  assign care_guide = product.metafields.custom.care_guide
+%}
+
+{% capture specifications_content %}
+  <details class="details" data-testid="accordion-details">
+    <summary class="details__header">
+      Specifications
+      <span class="svg-wrapper icon-caret icon-animated">
+        {{- 'icon-caret.svg' | inline_asset_content -}}
+      </span>
+    </summary>
+    <div class="details-content product-info-accordions__content">
+      <p>
+        Roll width, length, and pattern repeat are listed on the product where the mill has supplied them. Always check
+        the batch and dye lot before cutting.
+      </p>
+      <p>
+        Non-woven, vinyl, and specialty papers each hang differently. Wallpaper Gurus can confirm paste, lining, and
+        quantity for this paper before you order.
+      </p>
+    </div>
+  </details>
+{% endcapture %}
+
+{% capture installation_content %}
+  <details class="details" data-testid="accordion-details">
+    <summary class="details__header">
+      Installation
+      <span class="svg-wrapper icon-caret icon-animated">
+        {{- 'icon-caret.svg' | inline_asset_content -}}
+      </span>
+    </summary>
+    <div class="details-content product-info-accordions__content rte">
+      {% if installation_guide != blank %}
+        {{ installation_guide | metafield_tag }}
+      {% else %}
+        <p>
+          Wallpaper Gurus can advise on quantities, wall preparation, and professional installation across the Gold Coast
+          and Brisbane. Contact us if you would like us to hang this paper.
+        </p>
+      {% endif %}
+      {% if coverage_guide != blank %}
+        <div class="product-info-accordions__coverage">
+          {{ coverage_guide | metafield_tag }}
+        </div>
+      {% endif %}
+    </div>
+  </details>
+{% endcapture %}
+
+{% if care_guide != blank %}
+  {% capture care_content %}
+    <details class="details" data-testid="accordion-details">
+      <summary class="details__header">
+        Care
+        <span class="svg-wrapper icon-caret icon-animated">
+          {{- 'icon-caret.svg' | inline_asset_content -}}
+        </span>
+      </summary>
+      <div class="details-content product-info-accordions__content rte">
+        {{ care_guide | metafield_tag }}
+      </div>
+    </details>
+  {% endcapture %}
+{% else %}
+  {% capture care_content %}
+    <details class="details" data-testid="accordion-details">
+      <summary class="details__header">
+        Care
+        <span class="svg-wrapper icon-caret icon-animated">
+          {{- 'icon-caret.svg' | inline_asset_content -}}
+        </span>
+      </summary>
+      <div class="details-content product-info-accordions__content">
+        <p>
+          Wipe with a dry or slightly damp cloth. Avoid harsh cleaners. Keep rolls in the wrapper, standing or lying
+          flat, away from direct sun until they are hung.
+        </p>
+      </div>
+    </details>
+  {% endcapture %}
+{% endif %}
+
+{% capture shipping_returns_content %}
+  <details class="details" data-testid="accordion-details">
+    <summary class="details__header">
+      Shipping &amp; returns
+      <span class="svg-wrapper icon-caret icon-animated">
+        {{- 'icon-caret.svg' | inline_asset_content -}}
+      </span>
+    </summary>
+    <div class="details-content product-info-accordions__content">
+      <h3>Shipping</h3>
+      <p>
+        Wallpaper orders are packed to protect rolls in transit. Dispatch timing depends on stock and any custom or
+        special-order papers. You will receive tracking once the order leaves us.
+      </p>
+      <p>
+        If a delivery address cannot be validated, we will contact you before the order is sent.
+      </p>
+
+      <h3>Returns</h3>
+      <p>
+        Unopened, unused wallpaper may be eligible for return or exchange within 14 days of delivery. Cut, hung, or
+        custom-printed papers cannot be returned except where required by Australian Consumer Law.
+      </p>
+      <p>
+        Contact Wallpaper Gurus with your order details and we will confirm the next step.
+      </p>
+    </div>
+  </details>
+{% endcapture %}
+
+<div class="product-info-accordions accordion accordion--dividers">
+  {% render 'accordion-custom-component', children: specifications_content %}
+  {% render 'accordion-custom-component', children: installation_content %}
+  {% render 'accordion-custom-component', children: care_content %}
+  {% render 'accordion-custom-component', children: shipping_returns_content %}
+</div>
+
+{% render 'accordion-styles' %}

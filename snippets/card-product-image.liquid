@@ -1,0 +1,35 @@
+{%- doc -%}
+  Square cropped product-card image with a small srcset.
+
+  @param {object} image - The image to render
+  @param {string} [alt] - Alt text
+  @param {string} [sizes] - Sizes attribute
+  @param {string} [loading] - eager or lazy
+  @param {string} [fetchpriority] - high, low, or auto
+{%- enddoc -%}
+
+{% liquid
+  assign card_alt = alt | default: image.alt
+  assign card_loading = loading | default: 'lazy'
+  assign card_fetchpriority = fetchpriority | default: 'auto'
+  assign card_sizes = sizes | default: '(min-width: 750px) 25vw, 50vw'
+%}
+
+<img
+  class="product-media__image"
+  src="{{ image | image_url: width: 800, height: 800, crop: 'center' }}"
+  srcset="
+    {{ image | image_url: width: 320, height: 320, crop: 'center' }} 320w,
+    {{ image | image_url: width: 480, height: 480, crop: 'center' }} 480w,
+    {{ image | image_url: width: 640, height: 640, crop: 'center' }} 640w,
+    {{ image | image_url: width: 800, height: 800, crop: 'center' }} 800w
+  "
+  sizes="{{ card_sizes }}"
+  alt="{{ card_alt | escape }}"
+  width="800"
+  height="800"
+  loading="{{ card_loading }}"
+  fetchpriority="{{ card_fetchpriority }}"
+  decoding="async"
+  onload="this.classList.add('is-loaded')"
+>

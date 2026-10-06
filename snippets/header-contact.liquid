@@ -1,0 +1,253 @@
+{% doc %}
+  Instagram, Facebook, and a phone call button for the right side of the header.
+
+  @param {object} section - The header section.
+{% enddoc %}
+
+{% liquid
+  assign instagram_url = section.settings.instagram_url
+  assign facebook_url = section.settings.facebook_url
+  assign phone_label = section.settings.phone
+  assign phone_digits = phone_label | replace: ' ', '' | replace: '-', '' | replace: '(', '' | replace: ')', ''
+
+  if phone_digits != blank
+    assign phone_prefix = phone_digits | slice: 0, 2
+    if phone_digits contains '+'
+      assign phone_href = phone_digits
+    elsif phone_prefix == '61'
+      assign phone_href = phone_digits | prepend: '+'
+    else
+      assign phone_href = phone_digits | remove_first: '0' | prepend: '+61'
+    endif
+  endif
+%}
+
+{% if instagram_url != blank or facebook_url != blank or phone_label != blank %}
+  <div class="header-contact">
+    {% if instagram_url != blank or facebook_url != blank %}
+      <div class="header-contact__social">
+        {% if instagram_url != blank %}
+          <a
+            class="header-contact__icon-link"
+            href="{{ instagram_url }}"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Instagram"
+          >
+            <svg class="header-contact__icon" viewBox="0 0 20 20" aria-hidden="true" focusable="false">
+              {% render 'icon', icon: 'instagram' %}
+            </svg>
+          </a>
+        {% endif %}
+        {% if facebook_url != blank %}
+          <a
+            class="header-contact__icon-link"
+            href="{{ facebook_url }}"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Facebook"
+          >
+            <svg class="header-contact__icon" viewBox="0 0 20 20" aria-hidden="true" focusable="false">
+              {% render 'icon', icon: 'facebook' %}
+            </svg>
+          </a>
+        {% endif %}
+      </div>
+    {% endif %}
+
+    {% if phone_label != blank %}
+      <span class="header-contact__phone-slot">
+        <span class="header-contact__phone-sizer" aria-hidden="true">{{ phone_label | escape }}</span>
+        <a class="header-contact__phone" href="tel:{{ phone_href }}">
+          <span class="header-contact__phone-number">{{ phone_label | escape }}</span>
+          <span class="header-contact__phone-prompt">
+            <span>Need help choosing? Give us a call</span>
+            <svg class="header-contact__phone-arrow" viewBox="0 0 20 20" aria-hidden="true" focusable="false">
+              {% render 'icon', icon: 'arrow' %}
+            </svg>
+          </span>
+        </a>
+      </span>
+    {% endif %}
+  </div>
+{% endif %}
+
+{% stylesheet %}
+  .header-contact {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    flex-shrink: 0;
+  }
+
+  .header-contact__social {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .header-contact__icon-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    color: var(--color-foreground);
+    transition:
+      color 0.45s var(--ease-out-cubic),
+      opacity 0.3s ease;
+  }
+
+  @media (hover: hover) {
+    .header-contact__icon-link:is(:hover, :focus-visible) {
+      opacity: 0.55;
+    }
+  }
+
+  .header-contact__icon {
+    width: 18px;
+    height: 18px;
+    fill: currentColor;
+  }
+
+  .header-contact__phone-slot {
+    position: relative;
+    display: inline-flex;
+    flex-shrink: 0;
+  }
+
+  .header-contact__phone-sizer {
+    display: none;
+    visibility: hidden;
+    padding: 8px 14px;
+    border: 1px solid transparent;
+    font-size: 0.875rem;
+    line-height: 1;
+    letter-spacing: 0.01em;
+    white-space: nowrap;
+  }
+
+  .header .header-contact__phone {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: flex-end;
+    padding: 8px 14px;
+    border: 1px solid currentColor;
+    border-radius: 0;
+    background-color: transparent;
+    color: var(--color-foreground);
+    font-size: 0.875rem;
+    line-height: 1;
+    letter-spacing: 0.01em;
+    text-decoration: none;
+    white-space: nowrap;
+    transition:
+      color 0.2s ease,
+      border-color 0.45s var(--ease-out-cubic),
+      background-color 0.45s var(--ease-out-cubic),
+      box-shadow 0.45s var(--ease-out-cubic);
+  }
+
+  .header-contact__phone-number {
+    display: block;
+  }
+
+  .header-contact__phone-prompt {
+    display: none;
+  }
+
+  @media screen and (min-width: 750px) and (hover: hover) {
+    .header-contact__phone-sizer {
+      display: block;
+    }
+
+    .header .header-contact__phone {
+      position: absolute;
+      top: 0;
+      right: 0;
+      z-index: 4;
+    }
+
+    .header .header-contact__phone-prompt {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 8px;
+      max-width: 0;
+      max-height: 0;
+      margin-top: 0;
+      overflow: hidden;
+      opacity: 0;
+      font-size: 0.75rem;
+      letter-spacing: 0.01em;
+      transform: translateY(-6px);
+      transition:
+        max-width 0.5s var(--ease-out-cubic),
+        max-height 0.45s var(--ease-out-cubic),
+        margin-top 0.45s var(--ease-out-cubic),
+        opacity 0.35s ease 0.18s,
+        transform 0.45s var(--ease-out-cubic) 0.12s;
+    }
+
+    .header-contact__phone-arrow {
+      width: 14px;
+      height: 14px;
+      flex-shrink: 0;
+      opacity: 0;
+      transform: translateX(-8px);
+      transition:
+        transform 0.4s var(--ease-out-cubic) 0.14s,
+        opacity 0.35s ease 0.14s;
+    }
+
+    .header .header-contact__phone:is(:hover, :focus-visible) {
+      color: var(--color-transparent-text-contrast, var(--color-foreground));
+      background-color: var(--color-transparent-text, var(--color-background));
+      border-color: var(--color-transparent-text, currentColor);
+      box-shadow: 0 10px 28px rgb(0 0 0 / 0.16);
+    }
+
+    .header .header-contact__phone:is(:hover, :focus-visible) .header-contact__phone-prompt {
+      max-width: 24rem;
+      max-height: 1.5rem;
+      margin-top: 8px;
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .header .header-contact__phone:is(:hover, :focus-visible) .header-contact__phone-arrow {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  @media screen and (max-width: 749px) {
+    .header-contact {
+      gap: 4px;
+    }
+
+    .header-contact__social {
+      gap: 0;
+    }
+
+    .header-contact__icon-link {
+      width: 24px;
+      height: 32px;
+    }
+
+    .header-contact__phone-sizer {
+      display: none;
+    }
+
+    .header .header-contact__phone {
+      position: static;
+      padding: 7px 8px;
+      font-size: 0.75rem;
+    }
+
+    .header__columns:has(.header-contact) .header-actions__search-toggle,
+    .header__columns:has(.header-contact) .account-button {
+      display: none;
+    }
+  }
+{% endstylesheet %}

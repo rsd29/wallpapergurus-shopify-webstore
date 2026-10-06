@@ -1,0 +1,123 @@
+<link
+  rel="preload"
+  href="{{ 'Delight-VF.ttf' | asset_url }}"
+  as="font"
+  type="font/ttf"
+  crossorigin
+  fetchpriority="high"
+>
+
+{% style %}
+  @font-face {
+    font-family: 'Delight';
+    src: url('{{ 'Delight-VF.ttf' | asset_url }}') format('truetype-variations');
+    font-weight: 100 900;
+    font-style: normal;
+    font-display: swap;
+  }
+
+  @font-face {
+    font-family: 'Delight';
+    src: url('{{ 'Delight-Thin.ttf' | asset_url }}') format('truetype'),
+      url('{{ 'Delight-Thin.otf' | asset_url }}') format('opentype');
+    font-weight: 100;
+    font-style: normal;
+    font-display: swap;
+  }
+
+  @font-face {
+    font-family: 'Delight';
+    src: url('{{ 'Delight-ExtraLight.ttf' | asset_url }}') format('truetype'),
+      url('{{ 'Delight-ExtraLight.otf' | asset_url }}') format('opentype');
+    font-weight: 200;
+    font-style: normal;
+    font-display: swap;
+  }
+
+  @font-face {
+    font-family: 'Delight';
+    src: url('{{ 'Delight-Light.ttf' | asset_url }}') format('truetype'),
+      url('{{ 'Delight-Light.otf' | asset_url }}') format('opentype');
+    font-weight: 300;
+    font-style: normal;
+    font-display: swap;
+  }
+
+  @font-face {
+    font-family: 'Delight';
+    src: url('{{ 'Delight-Regular.ttf' | asset_url }}') format('truetype'),
+      url('{{ 'Delight-Regular.otf' | asset_url }}') format('opentype');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+  }
+
+  @font-face {
+    font-family: 'Delight';
+    src: url('{{ 'Delight-Medium.ttf' | asset_url }}') format('truetype'),
+      url('{{ 'Delight-Medium.otf' | asset_url }}') format('opentype');
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+  }
+
+  @font-face {
+    font-family: 'Delight';
+    src: url('{{ 'Delight-SemiBold.ttf' | asset_url }}') format('truetype'),
+      url('{{ 'Delight-SemiBold.otf' | asset_url }}') format('opentype');
+    font-weight: 600;
+    font-style: normal;
+    font-display: swap;
+  }
+
+  @font-face {
+    font-family: 'Delight';
+    src: url('{{ 'Delight-Bold.ttf' | asset_url }}') format('truetype'),
+      url('{{ 'Delight-Bold.otf' | asset_url }}') format('opentype');
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+  }
+
+  @font-face {
+    font-family: 'Delight';
+    src: url('{{ 'Delight-ExtraBold.ttf' | asset_url }}') format('truetype'),
+      url('{{ 'Delight-ExtraBold.otf' | asset_url }}') format('opentype');
+    font-weight: 800;
+    font-style: normal;
+    font-display: swap;
+  }
+
+  @font-face {
+    font-family: 'Delight';
+    src: url('{{ 'Delight-Black.ttf' | asset_url }}') format('truetype'),
+      url('{{ 'Delight-Black.otf' | asset_url }}') format('opentype');
+    font-weight: 900;
+    font-style: normal;
+    font-display: swap;
+  }
+
+  :root {
+    --font-delight: 'Delight', sans-serif;
+    --font-body--family: var(--font-delight);
+    --font-subheading--family: var(--font-delight);
+    --font-heading--family: var(--font-delight);
+    --font-accent--family: var(--font-delight);
+    --font-paragraph--family: var(--font-delight);
+    --font-h1--family: var(--font-delight);
+    --font-h2--family: var(--font-delight);
+    --font-h3--family: var(--font-delight);
+    --font-h4--family: var(--font-delight);
+    --font-h5--family: var(--font-delight);
+    --font-h6--family: var(--font-delight);
+  }
+
+  html,
+  body,
+  button,
+  input,
+  select,
+  textarea {
+    font-family: var(--font-delight);
+  }
+{% endstyle %}

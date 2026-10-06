@@ -1,0 +1,786 @@
+{% liquid
+  assign about_url = section.settings.about_url
+  if about_url == blank and pages['about'] != blank
+    assign about_url = pages['about'].url
+  elsif about_url == blank
+    assign about_url = '/pages/about'
+  endif
+
+  assign collections_url = section.settings.collections_url
+  if collections_url == blank
+    assign collections_url = routes.all_products_collection_url
+  endif
+
+  assign privacy_url = section.settings.privacy_policy_url
+  if privacy_url == blank and pages['privacy-policy'] != blank
+    assign privacy_url = pages['privacy-policy'].url
+  elsif privacy_url == blank and shop.privacy_policy != blank
+    assign privacy_url = shop.privacy_policy.url
+  elsif privacy_url == blank
+    assign privacy_url = '/pages/privacy-policy'
+  endif
+
+  assign terms_url = section.settings.terms_of_use_url
+  if terms_url == blank and pages['terms-of-use'] != blank
+    assign terms_url = pages['terms-of-use'].url
+  elsif terms_url == blank and shop.terms_of_service != blank
+    assign terms_url = shop.terms_of_service.url
+  elsif terms_url == blank
+    assign terms_url = '/pages/terms-of-use'
+  endif
+
+  assign installation_url = section.settings.installation_url
+  if installation_url == blank and pages['installation'] != blank
+    assign installation_url = pages['installation'].url
+  elsif installation_url == blank and pages['services'] != blank
+    assign installation_url = pages['services'].url
+  elsif installation_url == blank
+    assign installation_url = '/pages/installation'
+  endif
+
+  assign contact_url = section.settings.contact_url
+  if contact_url == blank and pages['contact'] != blank
+    assign contact_url = pages['contact'].url
+  elsif contact_url == blank
+    assign contact_url = '/pages/contact'
+  endif
+
+  assign background_color = section.settings.background_color | default: '#0b1d36'
+  assign text_color = section.settings.text_color | default: '#ffffff'
+  assign muted_color = section.settings.muted_text_color | default: '#d5dce8'
+
+  if section.settings.background_color != blank
+    render 'contrast-override', background_color: section.settings.background_color, text_color: section.settings.text_color, section_id: section.id
+  endif
+
+  assign legal_company = section.settings.company_name
+  if legal_company == blank
+    assign legal_company = shop.name
+  endif
+
+  assign legal_email = section.settings.email
+  if legal_email == blank
+    assign legal_email = shop.email
+  endif
+
+  assign store_address = section.settings.address
+  if store_address == blank and shop.address != blank
+    assign store_address = shop.address | format_address | strip_html | strip_newlines
+  endif
+
+  assign opening_hours = section.settings.opening_hours
+
+  assign copyright_name = section.settings.copyright_name
+  if copyright_name == blank
+    assign copyright_name = shop.name
+  endif
+%}
+
+<div
+  class="section-background{% if section.settings.background_color != blank %} color-custom-{{ section.id }}{% endif %}"
+></div>
+
+<div
+  class="wallpaper-gurus-footer section section--{{ section.settings.section_width }}{% if section.settings.background_color != blank %} color-custom-{{ section.id }}{% endif %}"
+  style="
+    --wallpaper-gurus-footer-bg: {{ background_color }};
+    --wallpaper-gurus-footer-text: {{ text_color }};
+    --wallpaper-gurus-footer-muted: {{ muted_color }};
+    {% render 'spacing-style', settings: section.settings %}
+  "
+>
+  <div class="wallpaper-gurus-footer__inner">
+    <div class="wallpaper-gurus-footer__grid">
+      <div class="wallpaper-gurus-footer__column wallpaper-gurus-footer__column--info">
+        {% if store_address != blank %}
+          <div class="wallpaper-gurus-footer__info-block">
+            <p class="wallpaper-gurus-footer__info-label">Service area</p>
+            <p class="wallpaper-gurus-footer__info-text">{{ store_address | escape | newline_to_br }}</p>
+          </div>
+        {% endif %}
+
+        {% if opening_hours != blank %}
+          <div class="wallpaper-gurus-footer__info-block">
+            <p class="wallpaper-gurus-footer__info-label">Hours</p>
+            <p class="wallpaper-gurus-footer__info-text">{{ opening_hours | escape | newline_to_br }}</p>
+          </div>
+        {% endif %}
+      </div>
+
+      <nav class="wallpaper-gurus-footer__column wallpaper-gurus-footer__column--company" aria-label="Company">
+        <ul class="wallpaper-gurus-footer__link-list list-unstyled">
+          <li class="wallpaper-gurus-footer__link-item">
+            <a href="{{ about_url }}" class="wallpaper-gurus-footer__link">About</a>
+          </li>
+          <li class="wallpaper-gurus-footer__link-item">
+            <a
+              href="#"
+              class="wallpaper-gurus-footer__link"
+              data-shop-overlay-trigger
+              aria-controls="shop-overlay"
+              aria-expanded="false"
+              role="button"
+            >
+              Shop
+            </a>
+          </li>
+          <li class="wallpaper-gurus-footer__link-item">
+            <a href="{{ installation_url }}" class="wallpaper-gurus-footer__link">Installation</a>
+          </li>
+        </ul>
+      </nav>
+
+      <nav class="wallpaper-gurus-footer__column wallpaper-gurus-footer__column--connect" aria-label="Connect">
+        <ul class="wallpaper-gurus-footer__link-list list-unstyled">
+          <li class="wallpaper-gurus-footer__link-item">
+            <a href="{{ contact_url }}" class="wallpaper-gurus-footer__link">Contact Us</a>
+          </li>
+          {% if section.settings.facebook_url != blank %}
+            <li class="wallpaper-gurus-footer__link-item">
+              <a
+                href="{{ section.settings.facebook_url }}"
+                class="wallpaper-gurus-footer__link"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Facebook
+              </a>
+            </li>
+          {% endif %}
+          {% if section.settings.instagram_url != blank %}
+            <li class="wallpaper-gurus-footer__link-item">
+              <a
+                href="{{ section.settings.instagram_url }}"
+                class="wallpaper-gurus-footer__link"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Instagram
+              </a>
+            </li>
+          {% endif %}
+          {% if section.settings.newsletter_url != blank %}
+            <li class="wallpaper-gurus-footer__link-item">
+              <a href="{{ section.settings.newsletter_url }}" class="wallpaper-gurus-footer__link">
+                Join the list
+              </a>
+            </li>
+          {% endif %}
+        </ul>
+      </nav>
+    </div>
+
+    <div class="wallpaper-gurus-footer__meta{% unless section.settings.show_payment_icons %} wallpaper-gurus-footer__meta--no-payments{% endunless %}">
+      <div class="wallpaper-gurus-footer__meta-start">
+        {% if section.settings.designer_credit != blank %}
+          <p class="wallpaper-gurus-footer__credit">{{ section.settings.designer_credit | escape }}</p>
+        {% endif %}
+      </div>
+
+      <div class="wallpaper-gurus-footer__meta-center">
+        {% if section.settings.show_legal_notice %}
+          <p class="wallpaper-gurus-footer__legal-single">
+            {{ legal_company | escape }}
+            {%- if section.settings.phone != blank -%}
+              {%- assign phone_href = section.settings.phone | replace: ' ', '' | replace: '-', '' -%}
+              {%- unless phone_href contains '+' -%}
+                {%- assign phone_href = phone_href | prepend: '+' -%}
+              {%- endunless -%}
+              · <a href="tel:{{ phone_href }}">{{ section.settings.phone | escape }}</a>
+            {%- endif -%}
+            {%- if legal_email != blank -%}
+              · <a href="mailto:{{ legal_email | escape }}">{{ legal_email | escape }}</a>
+            {%- endif -%}
+            {%- if section.settings.abn != blank -%}
+              · ABN {{ section.settings.abn | escape }}
+            {%- endif -%}
+            · &copy; {{ 'now' | date: '%Y' }} {{ copyright_name | escape }}
+          </p>
+          <span class="wallpaper-gurus-footer__meta-dot" aria-hidden="true">·</span>
+        {% endif %}
+        <p class="wallpaper-gurus-footer__policies">
+          <a href="{{ privacy_url }}">Privacy Policy</a>
+          · <a href="{{ terms_url }}">Terms of Use</a>
+        </p>
+      </div>
+
+      {% if section.settings.show_payment_icons %}
+      <div class="wallpaper-gurus-footer__meta-end">
+          <div class="wallpaper-gurus-footer__payments">
+            <span class="visually-hidden">{{ 'blocks.payment_methods' | t }}</span>
+            <ul class="wallpaper-gurus-footer__payment-list list-unstyled" role="list">
+              <li class="wallpaper-gurus-footer__payment-item">
+                <img
+                  src="{{ 'payment-apple-pay.png' | asset_url }}"
+                  alt="Apple Pay"
+                  class="wallpaper-gurus-footer__payment-icon"
+                  width="130"
+                  height="64"
+                  loading="lazy"
+                >
+              </li>
+              <li class="wallpaper-gurus-footer__payment-item">
+                <img
+                  src="{{ 'payment-visa.png' | asset_url }}"
+                  alt="Visa"
+                  class="wallpaper-gurus-footer__payment-icon wallpaper-gurus-footer__payment-icon--visa"
+                  width="171"
+                  height="64"
+                  loading="lazy"
+                >
+              </li>
+              <li class="wallpaper-gurus-footer__payment-item">
+                <img
+                  src="{{ 'payment-mastercard.png' | asset_url }}"
+                  alt="Mastercard"
+                  class="wallpaper-gurus-footer__payment-icon"
+                  width="93"
+                  height="64"
+                  loading="lazy"
+                >
+              </li>
+              <li class="wallpaper-gurus-footer__payment-item">
+                <img
+                  src="{{ 'payment-google-pay.png' | asset_url }}"
+                  alt="Google Pay"
+                  class="wallpaper-gurus-footer__payment-icon wallpaper-gurus-footer__payment-icon--google-pay"
+                  width="256"
+                  height="256"
+                  loading="lazy"
+                >
+              </li>
+              <li class="wallpaper-gurus-footer__payment-item">
+                <img
+                  src="{{ 'payment-amex.png' | asset_url }}"
+                  alt="American Express"
+                  class="wallpaper-gurus-footer__payment-icon wallpaper-gurus-footer__payment-icon--amex"
+                  width="512"
+                  height="512"
+                  loading="lazy"
+                >
+              </li>
+            </ul>
+          </div>
+      </div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+{% stylesheet %}
+  .wallpaper-gurus-footer {
+    --wallpaper-gurus-footer-padding-top: clamp(2rem, 4vw, 2.75rem);
+    --wallpaper-gurus-footer-padding-bottom: var(--padding-md);
+
+    background-color: var(--wallpaper-gurus-footer-bg);
+    color: var(--wallpaper-gurus-footer-text);
+    padding-block-start: var(--wallpaper-gurus-footer-padding-top);
+    padding-block-end: var(--wallpaper-gurus-footer-padding-bottom);
+  }
+
+  .wallpaper-gurus-footer__inner {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    width: 100%;
+    margin-inline: auto;
+    padding-inline: 0;
+  }
+
+  .wallpaper-gurus-footer.section--full-width .wallpaper-gurus-footer__inner {
+    padding-inline: var(--page-margin);
+  }
+
+  .wallpaper-gurus-footer__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+    width: 100%;
+  }
+
+  @media screen and (min-width: 750px) {
+    .wallpaper-gurus-footer__grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 2.5rem;
+      align-items: start;
+    }
+  }
+
+  .wallpaper-gurus-footer__column {
+    min-width: 0;
+  }
+
+  .wallpaper-gurus-footer__column--info {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+
+  @media screen and (min-width: 750px) {
+    .wallpaper-gurus-footer__column:not(.wallpaper-gurus-footer__column--info) {
+      padding-top: 0.125rem;
+    }
+  }
+
+  .wallpaper-gurus-footer__info-block {
+    display: flex;
+    flex-direction: column;
+    gap: 0.375rem;
+  }
+
+  .wallpaper-gurus-footer__info-label {
+    margin: 0;
+    font-family: var(--font-body--family);
+    font-size: var(--font-size--xs);
+    font-weight: var(--font-body--weight);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--wallpaper-gurus-footer-text);
+  }
+
+  .wallpaper-gurus-footer__info-text {
+    margin: 0;
+    font-family: var(--font-body--family);
+    font-size: 0.75rem;
+    font-weight: var(--font-body--weight);
+    letter-spacing: 0.02em;
+    line-height: 1.5;
+    color: var(--wallpaper-gurus-footer-muted);
+  }
+
+  .wallpaper-gurus-footer__link-list {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.625rem;
+    width: 100%;
+  }
+
+  .wallpaper-gurus-footer__link-item {
+    width: 100%;
+  }
+
+  .wallpaper-gurus-footer__link {
+    font-family: var(--font-body--family);
+    font-size: var(--font-size--xs);
+    font-weight: var(--font-body--weight);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: var(--wallpaper-gurus-footer-text);
+    transition: opacity 0.25s var(--ease-out-cubic, ease);
+  }
+
+  .wallpaper-gurus-footer__link:hover,
+  .wallpaper-gurus-footer__link:focus-visible {
+    opacity: 0.55;
+  }
+
+  .wallpaper-gurus-footer__meta {
+    display: grid;
+    grid-template-columns: minmax(7rem, auto) minmax(0, 1fr) minmax(12rem, auto);
+    align-items: center;
+    gap: 1rem;
+    width: 100%;
+    padding-top: 1rem;
+    border-top: 0.5px solid rgb(255 255 255 / 0.2);
+  }
+
+  .wallpaper-gurus-footer__meta--no-payments {
+    grid-template-columns: 1fr auto 1fr;
+  }
+
+  .wallpaper-gurus-footer__meta-start {
+    justify-self: start;
+  }
+
+  .wallpaper-gurus-footer__meta-center {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    justify-self: center;
+    gap: 0 0.4em;
+    text-align: center;
+    min-width: 0;
+  }
+
+  .wallpaper-gurus-footer__meta-end {
+    justify-self: end;
+  }
+
+  .wallpaper-gurus-footer__credit,
+  .wallpaper-gurus-footer__legal-single,
+  .wallpaper-gurus-footer__policies,
+  .wallpaper-gurus-footer__meta-dot {
+    margin: 0;
+    font-size: 0.625rem;
+    font-weight: var(--font-body--weight);
+    letter-spacing: 0.02em;
+    line-height: 1.4;
+    color: var(--wallpaper-gurus-footer-muted);
+  }
+
+  .wallpaper-gurus-footer__credit {
+    font-family: var(--font-body--family);
+    text-align: left;
+    white-space: nowrap;
+  }
+
+  .wallpaper-gurus-footer__legal-single {
+    font-family: var(--font-body--family);
+    text-align: center;
+  }
+
+  .wallpaper-gurus-footer__policies {
+    font-family: var(--font-body--family);
+    text-align: center;
+    white-space: nowrap;
+  }
+
+  .wallpaper-gurus-footer__legal-single a,
+  .wallpaper-gurus-footer__policies a {
+    color: inherit;
+    text-decoration: none;
+    transition: opacity 0.25s var(--ease-out-cubic, ease);
+  }
+
+  .wallpaper-gurus-footer__legal-single a:hover,
+  .wallpaper-gurus-footer__legal-single a:focus-visible,
+  .wallpaper-gurus-footer__policies a:hover,
+  .wallpaper-gurus-footer__policies a:focus-visible {
+    opacity: 0.7;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  .wallpaper-gurus-footer__legal-single a[href^='mailto:'] {
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  .wallpaper-gurus-footer__payments {
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  .wallpaper-gurus-footer__payment-list {
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 0.75rem;
+    margin: 0;
+    padding: 0;
+  }
+
+  .wallpaper-gurus-footer__payment-item {
+    display: flex;
+    align-items: center;
+    line-height: 0;
+  }
+
+  .wallpaper-gurus-footer__payment-icon {
+    display: block;
+    height: 1.125rem;
+    width: auto;
+    object-fit: contain;
+    opacity: 0.95;
+  }
+
+  .wallpaper-gurus-footer__payment-icon--visa {
+    height: 0.8125rem;
+  }
+
+  .wallpaper-gurus-footer__payment-icon--amex {
+    height: 1.0625rem;
+  }
+
+  .wallpaper-gurus-footer__payment-icon--google-pay {
+    height: 2rem;
+  }
+
+  @media screen and (max-width: 749px) {
+    .wallpaper-gurus-footer {
+      --wallpaper-gurus-footer-padding-top: 1.5rem;
+    }
+
+    .wallpaper-gurus-footer__inner {
+      gap: 1rem;
+    }
+
+    .wallpaper-gurus-footer__grid {
+      grid-template-columns: 1fr 1fr;
+      column-gap: 1.25rem;
+      row-gap: 1.25rem;
+      align-items: start;
+    }
+
+    .wallpaper-gurus-footer__column--info {
+      grid-column: 1 / -1;
+      gap: 0.85rem;
+    }
+
+    .wallpaper-gurus-footer__link-list {
+      gap: 0.5rem;
+    }
+
+    .wallpaper-gurus-footer__meta {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+      column-gap: 0.45em;
+      row-gap: 0.55rem;
+    }
+
+    .wallpaper-gurus-footer__meta-center {
+      display: contents;
+    }
+
+    .wallpaper-gurus-footer__meta-dot {
+      display: none;
+    }
+
+    .wallpaper-gurus-footer__legal-single {
+      flex: 1 0 100%;
+      order: 1;
+      text-align: center;
+    }
+
+    .wallpaper-gurus-footer__policies {
+      order: 2;
+    }
+
+    .wallpaper-gurus-footer__meta-start {
+      order: 3;
+      width: auto;
+    }
+
+    .wallpaper-gurus-footer__credit {
+      text-align: center;
+      white-space: nowrap;
+    }
+
+    .wallpaper-gurus-footer__credit:not(:empty)::before {
+      content: '·';
+      margin-inline-end: 0.45em;
+    }
+
+    .wallpaper-gurus-footer__meta-end {
+      flex: 1 0 100%;
+      order: 4;
+      text-align: center;
+    }
+
+    .wallpaper-gurus-footer__payments,
+    .wallpaper-gurus-footer__payment-list {
+      justify-content: center;
+    }
+
+    .wallpaper-gurus-footer__credit,
+    .wallpaper-gurus-footer__legal-single,
+    .wallpaper-gurus-footer__policies,
+    .wallpaper-gurus-footer__meta-dot {
+      font-size: 0.5625rem;
+      line-height: 1.35;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Wallpaper Gurus footer",
+  "tag": "section",
+  "class": "wallpaper-gurus-footer-section",
+  "enabled_on": {
+    "groups": ["footer"]
+  },
+  "settings": [
+    {
+      "type": "header",
+      "content": "Column links"
+    },
+    {
+      "type": "url",
+      "id": "about_url",
+      "label": "About URL"
+    },
+    {
+      "type": "url",
+      "id": "collections_url",
+      "label": "Shop URL"
+    },
+    {
+      "type": "url",
+      "id": "privacy_policy_url",
+      "label": "Privacy policy URL"
+    },
+    {
+      "type": "url",
+      "id": "terms_of_use_url",
+      "label": "Terms of use URL"
+    },
+    {
+      "type": "url",
+      "id": "installation_url",
+      "label": "Installation URL"
+    },
+    {
+      "type": "url",
+      "id": "contact_url",
+      "label": "Contact URL"
+    },
+    {
+      "type": "url",
+      "id": "newsletter_url",
+      "label": "Join the list URL"
+    },
+    {
+      "type": "url",
+      "id": "facebook_url",
+      "label": "Facebook URL"
+    },
+    {
+      "type": "url",
+      "id": "instagram_url",
+      "label": "Instagram URL"
+    },
+    {
+      "type": "header",
+      "content": "Store details"
+    },
+    {
+      "type": "textarea",
+      "id": "address",
+      "label": "Service area",
+      "default": "Gold Coast and Brisbane,\nQueensland"
+    },
+    {
+      "type": "textarea",
+      "id": "opening_hours",
+      "label": "Hours",
+      "default": "By appointment"
+    },
+    {
+      "type": "header",
+      "content": "Legal notice"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_legal_notice",
+      "label": "Show legal notice",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_payment_icons",
+      "label": "Show payment icons",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "company_name",
+      "label": "Company name",
+      "default": "Wallpaper Gurus Pty Ltd"
+    },
+    {
+      "type": "text",
+      "id": "phone",
+      "label": "Phone",
+      "default": "61 451 157 022"
+    },
+    {
+      "type": "text",
+      "id": "email",
+      "label": "Email",
+      "default": "team@wallpapergurus.com"
+    },
+    {
+      "type": "text",
+      "id": "abn",
+      "label": "ABN"
+    },
+    {
+      "type": "text",
+      "id": "copyright_name",
+      "label": "Copyright name",
+      "default": "Wallpaper Gurus"
+    },
+    {
+      "type": "header",
+      "content": "Appearance"
+    },
+    {
+      "type": "text",
+      "id": "designer_credit",
+      "label": "Designer credit",
+      "default": "Designed by RSD"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "t:settings.background_color",
+      "default": "#0b1d36"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "t:settings.text_color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "muted_text_color",
+      "label": "Muted text color",
+      "default": "#d5dce8"
+    },
+    {
+      "type": "select",
+      "id": "section_width",
+      "label": "t:settings.width",
+      "options": [
+        {
+          "value": "page-width",
+          "label": "t:options.page"
+        },
+        {
+          "value": "full-width",
+          "label": "t:options.full"
+        }
+      ],
+      "default": "page-width"
+    },
+    {
+      "type": "header",
+      "content": "t:content.padding"
+    },
+    {
+      "type": "range",
+      "id": "padding-block-start",
+      "label": "t:settings.top",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding-block-end",
+      "label": "t:settings.bottom",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    }
+  ],
+  "presets": [
+    {
+      "name": "Wallpaper Gurus footer",
+      "category": "t:categories.footer"
+    }
+  ]
+}
+{% endschema %}

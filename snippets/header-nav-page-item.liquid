@@ -1,0 +1,56 @@
+{% doc %}
+  Renders one header nav item from a Shopify page or custom link.
+
+  @param {object} [nav_page] - The page to render
+  @param {string} [title] - Custom link title
+  @param {string} [url] - Custom link URL
+  @param {string} [handle] - Custom link handle
+  @param {string} variant - `desktop` or `mobile`
+{% enddoc %}
+
+{% liquid
+  assign item_title = title | default: nav_page.title
+  assign item_url = url | default: nav_page.url
+  assign item_handle = handle | default: nav_page.handle
+  assign is_current = false
+  if request.path == item_url
+    assign is_current = true
+  elsif item_handle == 'shop' and template.name == 'collection'
+    assign is_current = true
+  endif
+%}
+
+{% if variant == 'mobile' %}
+  <li>
+    <a
+      href="{{ item_url }}"
+      id="MenuItem-{{ item_handle }}"
+      class="menu-list__item"
+      {% if is_current %}
+        aria-current="page"
+      {% endif %}
+    >
+      {{- item_title | escape -}}
+    </a>
+  </li>
+{% else %}
+  <li
+    class="menu-list__list-item"
+    on:blur="/deactivate"
+    on:pointerenter="/activate"
+    on:pointerleave="/deactivate"
+  >
+    <a
+      href="{{ item_url }}"
+      data-skip-node-update="true"
+      class="menu-list__link{% if is_current %} menu-list__link--active{% endif %}"
+      {% if is_current %}
+        aria-current="page"
+      {% endif %}
+      ref="menuitem"
+    >
+      <span class="menu-list__link-title">{{- item_title | escape -}}</span>
+    </a>
+  </li>
+{% endif %}
+

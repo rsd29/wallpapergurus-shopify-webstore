@@ -1,0 +1,181 @@
+{% liquid
+  if section.settings.background_color != blank
+    render 'contrast-override', background_color: section.settings.background_color, section_id: section.id
+  endif
+%}
+
+<div
+  class="section-background{% if section.settings.background_color != blank %} color-custom-{{ section.id }}{% endif %}"
+></div>
+
+<div
+  class="empty-page section section--{{ section.settings.section_width }} spacing-style{% if section.settings.background_color != blank %} color-custom-{{ section.id }}{% endif %}"
+  style="{% render 'spacing-style', settings: section.settings %}"
+>
+  <div class="empty-page__inner">
+    {% if section.settings.kicker != blank %}
+      <p class="empty-page__kicker">{{ section.settings.kicker | escape }}</p>
+    {% endif %}
+    {% if section.settings.heading != blank %}
+      <h1 class="empty-page__heading">{{ section.settings.heading | escape }}</h1>
+    {% endif %}
+    {% if section.settings.lede != blank %}
+      <p class="empty-page__lede">{{ section.settings.lede | escape }}</p>
+    {% endif %}
+    <div class="empty-page__actions">
+      {% if section.settings.primary_label != blank %}
+        <a class="button" href="{{ section.settings.primary_link | default: routes.all_products_collection_url }}">
+          {{ section.settings.primary_label | escape }}
+        </a>
+      {% endif %}
+      {% if section.settings.secondary_label != blank %}
+        <a class="button-secondary" href="{{ section.settings.secondary_link | default: pages.contact.url | default: '/pages/contact' }}">
+          {{ section.settings.secondary_label | escape }}
+        </a>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+{% stylesheet %}
+  .empty-page {
+    min-height: min(70svh, 40rem);
+    align-content: center;
+  }
+
+  .empty-page__inner {
+    display: flex;
+    flex-direction: column;
+    gap: 1.15rem;
+    max-width: 36rem;
+  }
+
+  .empty-page__kicker {
+    margin: 0;
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: rgb(var(--color-foreground-rgb) / 0.5);
+  }
+
+  .empty-page__heading {
+    margin: 0;
+    font-family: var(--font-heading--family);
+    font-size: clamp(2.5rem, 4.6vw, 4rem);
+    font-weight: 600;
+    line-height: 0.98;
+    letter-spacing: -0.035em;
+  }
+
+  .empty-page__lede {
+    margin: 0;
+    font-size: 1.0625rem;
+    line-height: 1.6;
+    color: rgb(var(--color-foreground-rgb) / 0.72);
+  }
+
+  .empty-page__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-top: 0.5rem;
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Empty page",
+  "tag": "section",
+  "class": "empty-page-section",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "text",
+      "id": "kicker",
+      "label": "Kicker",
+      "default": "404"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "This page has been taken down."
+    },
+    {
+      "type": "textarea",
+      "id": "lede",
+      "label": "Lede",
+      "default": "The link may be wrong, or the page is no longer here. The shop is still open."
+    },
+    {
+      "type": "text",
+      "id": "primary_label",
+      "label": "Primary button",
+      "default": "Browse papers"
+    },
+    {
+      "type": "url",
+      "id": "primary_link",
+      "label": "Primary link"
+    },
+    {
+      "type": "text",
+      "id": "secondary_label",
+      "label": "Secondary button",
+      "default": "Contact us"
+    },
+    {
+      "type": "url",
+      "id": "secondary_link",
+      "label": "Secondary link"
+    },
+    {
+      "type": "select",
+      "id": "section_width",
+      "label": "t:settings.width",
+      "options": [
+        { "value": "page-width", "label": "t:options.page" },
+        { "value": "full-width", "label": "t:options.full" }
+      ],
+      "default": "page-width"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "t:settings.background_color"
+    },
+    {
+      "type": "header",
+      "content": "t:content.padding"
+    },
+    {
+      "type": "range",
+      "id": "padding-block-start",
+      "label": "t:settings.top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "padding-block-end",
+      "label": "t:settings.bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 80
+    }
+  ],
+  "presets": [
+    {
+      "name": "Empty page"
+    }
+  ]
+}
+{% endschema %}

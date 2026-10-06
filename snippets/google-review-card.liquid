@@ -1,0 +1,122 @@
+{%- doc -%}
+  A single Google-style review card.
+
+  @param {string} author - Reviewer name
+  @param {string} [date] - Relative date, e.g. "2 weeks ago"
+  @param {number} [rating] - Star rating 1–5
+  @param {string} [text] - Review body
+  @param {object} [image] - Optional portrait
+  @param {string} [link] - Google review or business-page URL
+  @param {number} [tone] - Avatar colour index
+  @param {string} [shopify_attributes] - Theme editor attributes
+{%- enddoc -%}
+
+{% liquid
+  assign reviewer = author | default: 'Google user' | strip
+  assign review_rating = rating | default: 5 | plus: 0 | round
+  if review_rating < 1
+    assign review_rating = 1
+  elsif review_rating > 5
+    assign review_rating = 5
+  endif
+
+  assign name_parts = reviewer | split: ' '
+  assign first_initial = name_parts.first | slice: 0, 1 | upcase
+  assign initials = first_initial
+  if name_parts.size > 1
+    assign last_initial = name_parts.last | slice: 0, 1 | upcase
+    assign initials = first_initial | append: last_initial
+  endif
+
+  assign avatar_tone = tone | default: 0 | plus: 0 | modulo: 10
+%}
+
+<article
+  class="google-reviews__card"
+  data-review
+  {{ shopify_attributes }}
+>
+  <header class="google-reviews__person">
+    <span class="google-reviews__avatar" data-tone="{{ avatar_tone }}" aria-hidden="true">
+      {% if image != blank %}
+        {{
+          image
+          | image_url: width: 96
+          | image_tag:
+            widths: '48, 72, 96',
+            sizes: '40px',
+            class: 'google-reviews__portrait',
+            loading: 'lazy',
+            alt: reviewer
+        }}
+      {% else %}
+        {{ initials }}
+      {% endif %}
+    </span>
+
+    <div class="google-reviews__identity">
+      <p class="google-reviews__name">{{ reviewer | escape }}</p>
+      {% if date != blank %}
+        <p class="google-reviews__date">{{ date | escape }}</p>
+      {% endif %}
+    </div>
+
+    {% if link != blank %}
+      <a
+        class="google-reviews__source"
+        href="{{ link }}"
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="Read {{ reviewer | escape }}’s review on Google"
+      >
+        {% render 'icon-google-g', class: 'google-reviews__g google-reviews__g--card' %}
+      </a>
+    {% else %}
+      <span class="google-reviews__source" aria-hidden="true">
+        {% render 'icon-google-g', class: 'google-reviews__g google-reviews__g--card' %}
+      </span>
+    {% endif %}
+  </header>
+
+  <div class="google-reviews__stars" aria-label="{{ review_rating }} out of 5 stars">
+    {% for i in (1..5) %}
+      <svg
+        class="google-reviews__star{% if i > review_rating %} google-reviews__star--empty{% endif %}"
+        viewBox="0 0 24 24"
+        aria-hidden="true"
+        focusable="false"
+      >
+        <path d="M12 17.27 18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
+      </svg>
+    {% endfor %}
+  </div>
+
+  {% if text != blank %}
+    <p class="google-reviews__text" data-review-text>{{ text | escape }}</p>
+  {% endif %}
+
+  <div class="google-reviews__actions">
+    {% if text != blank %}
+      <button
+        class="google-reviews__more"
+        type="button"
+        data-review-more
+        hidden
+        aria-expanded="false"
+      >
+        More
+      </button>
+    {% endif %}
+
+    {% if link != blank %}
+      <a
+        class="google-reviews__google-link"
+        href="{{ link }}"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        Read on Google
+      </a>
+    {% endif %}
+  </div>
+</article>
